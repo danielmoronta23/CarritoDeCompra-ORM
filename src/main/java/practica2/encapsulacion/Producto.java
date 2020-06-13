@@ -1,8 +1,6 @@
 package practica2.encapsulacion;
 
-<<<<<<< HEAD
-public class Producto {
-=======
+
 import java.math.BigDecimal;
 
 public class Producto {
@@ -39,6 +37,4 @@ public class Producto {
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
-
->>>>>>> Agregando class
 }

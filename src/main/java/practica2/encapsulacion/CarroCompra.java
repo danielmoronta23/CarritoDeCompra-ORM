@@ -1,15 +1,9 @@
 package practica2.encapsulacion;
 
-<<<<<<< HEAD
 import java.math.BigDecimal;
 
-public class CarroCompra {
-    private String id;
-    private String nombre;
-    private BigDecimal precio;
-=======
-import java.util.List;
 
+import java.util.List;
 public class CarroCompra {
     private String id;
     private List<Producto> listaProducto;
@@ -34,7 +28,4 @@ public class CarroCompra {
     public void setId(String id) {
         this.id = id;
     }
-
-
->>>>>>> Agregando class
 }
