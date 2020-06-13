@@ -1,19 +1,14 @@
 package practica2.encapsulacion;
 
-<<<<<<< HEAD
-public class Producto {
-=======
-import java.math.BigDecimal;
-
-public class Producto {
+public class Usuario {
     private String id;
     private String nombre;
-    private BigDecimal precio;
+    private String password;
 
-    public Producto(String id, String nombre, BigDecimal precio) {
+    public Usuario(String id, String nombre, String password) {
         this.id = id;
         this.nombre = nombre;
-        this.precio = precio;
+        this.password = password;
     }
 
     public String getId() {
@@ -32,13 +27,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public BigDecimal getPrecio() {
-        return precio;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
+    public void setPassword(String password) {
+        this.password = password;
     }
-
->>>>>>> Agregando class
 }
