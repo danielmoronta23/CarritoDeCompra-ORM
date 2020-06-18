@@ -92,5 +92,9 @@ public class Controladora {
         }
         return pro;
     }
+    public Usuario autheticarUsuario(String usuario, String password){
+        //simulando la busqueda en la base de datos.
+        return new Usuario(usuario, "Usuario "+usuario, password);
+    }
 
 }
