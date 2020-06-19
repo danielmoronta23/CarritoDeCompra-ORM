@@ -39,39 +39,16 @@ public class ControladorInicioSesion extends ControladorBase {
             path("/", () ->{ //Reune un grupo de Endpoint para que funcionen en un mismo path o ruta
                 app.get("/", ctx -> {
                     //render es la funcion para renderizar (crear vista) de la pagina que queremos PROBEMOS!
-//                    ctx.cookie("usuario", "nombre de usuario"); //permite crear una cookie
-                    ctx.render("/publico/inisioSesion/index.html"); //ctx es el contexto que usa Javalin para manejar los endpoint
-                });
-                //Los mismo, puedes usar incluso en el doc HTML un <a ref="dasd" href="/Admin/inicio.html> y javalin lo reconocera
-                /*
-                app.get("/inicio.html", ctx -> {
-
-                 //   ctx.redirect("/401.html");
-                    //Hacer modelo de datos para enviar
+                    //ctx.cookie("usuario", "nombre de usuario"); //permite crear una cookie
+                    //ctx.render("/publico/inisioSesion/index.html"); //ctx es el contexto que usa Javalin para manejar los endpoint
                     Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("usuario","Daniel Peña");
-                        //Agregar producto
-                    try {
-                        String name = ctx.queryParam("nombre");//permite obtener lo que se ingre  en parrametro <nomnbre>
-                        String p = "0.00";
-                        p =  ctx.queryParam("precio");
-                        BigDecimal precio= new BigDecimal(p);
-                        System.out.println("EL PRECIO ES: "+precio);
-                        Producto miProducto = new Producto("ID-01",name, precio);
-                        Controladora.getInstance().crearProducto(miProducto);
-
-                    }catch (Exception e){
-                        System.out.println("No se pudo guardar el producto");
-                    }
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
-                    modelo.put("titulo", "Listado de producto");
+                    modelo.put("titulo", "Lista de producto disponible:");
                     modelo.put("lista", auxProducto);
-                    //que mas ??
-                    //enviando al sistema de plantilla.
-                    ctx.render("/publico/Admin/inicio.html", modelo);
-
+                    ctx.render("/publico/principal/principal.html",modelo);
                 });
-*/
+                //Los mismo, puedes usar incluso en el doc HTML un <a ref="dasd" href="/Admin/principal.html> y javalin lo reconocera
+
             });
         });
         app.post("/autenticar", ctx -> {
@@ -107,7 +84,27 @@ public class ControladorInicioSesion extends ControladorBase {
             // ctx.redirect("/zona-admin-clasica/");
         });
         app.get("/administrado", ctx -> {
-            ctx.render("/publico/Admin/inicio.html");
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario","Daniel Peña");
+            //Agregar producto
+            try {
+                String name = ctx.queryParam("nombre");//permite obtener lo que se ingre  en parrametro <nomnbre>
+                String p = "0.00";
+                p =  ctx.queryParam("precio");
+                BigDecimal precio= new BigDecimal(p);
+                System.out.println("EL PRECIO ES: "+precio);
+                Producto miProducto = new Producto("ID-01",name, precio);
+                Controladora.getInstance().crearProducto(miProducto);
+            }catch (Exception e){
+                System.out.println("No se pudo guardar el producto");
+            }
+            List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
+            modelo.put("titulo", "Listado de producto");
+            modelo.put("lista", auxProducto);
+            //que mas ??
+            //enviando al sistema de plantilla.
+            ctx.render("/publico/Admin/inicio.html",modelo);
+
         });
         /**
          * Redirige a la ventana administravtiva
