@@ -2,6 +2,7 @@ package practica2;
 
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
+import practica2.controladores.ControladorInicioSesion;
 import practica2.controladores.ControladorPlantilla;
 import practica2.encapsulacion.Controladora;
 
@@ -13,10 +14,10 @@ public class Main {
             config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
             config.enableCorsForAllOrigins();
         }).start(getHerokuAssignedPort());
-      //  app.get("/", ctx -> ctx.result("Hola Mundo en Javalin :-D"));
-        new ControladorPlantilla(app).aplicarRutas();
+      // app.get("/", ctx -> ctx.redirect(""));
+      new ControladorPlantilla(app).aplicarRutas();
 
-
+   // new ControladorInicioSesion(app).aplicarRutas();
 
     }
     /**
