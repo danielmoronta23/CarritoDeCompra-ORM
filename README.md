@@ -1,2 +1,2 @@
-# Pracitica2-ProgramacionW
-Carrito de Compra - Javalin
+# Práctica: Programacion-Web
+Basic CRUD of a shopping cart in Javelin
