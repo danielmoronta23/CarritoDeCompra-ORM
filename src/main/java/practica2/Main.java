@@ -13,11 +13,9 @@ public class Main {
             config.addStaticFiles("/publico"); //desde la carpeta de resources
             config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
             config.enableCorsForAllOrigins();
-        }).start(getHerokuAssignedPort());
-      // app.get("/", ctx -> ctx.redirect(""));
-      new ControladorPlantilla(app).aplicarRutas();
+        }).start(7000);//AVER Xd
 
-   // new ControladorInicioSesion(app).aplicarRutas();
+        new ControladorInicioSesion(app).aplicarRutas();
 
     }
     /**
