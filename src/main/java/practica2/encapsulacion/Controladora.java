@@ -10,18 +10,16 @@ import java.util.List;
 
 public class Controladora {
     private static Controladora controladora = null;
-    private List<Usuario> misUsuarios;
-    private List<CarroCompra> miCarroComprea;
-    private List<Producto> miProducto;
-    private List<VentasProductos> misVentasProducto;
+    private List<Usuario> misUsuarios = new ArrayList<>();
+    private List<CarroCompra> miCarroComprea = new ArrayList<>();
+    private List<Producto> miProducto = new ArrayList<>();
+    private List<VentasProductos> misVentasProducto  = new ArrayList<>();
+
     /**
      *Implementando el patron Singleton
      */
     public Controladora() {
-        misUsuarios = new ArrayList<>();
-        miCarroComprea= new ArrayList<>();
-        miProducto= new ArrayList<>();
-        misVentasProducto = new ArrayList<>();
+        misUsuarios.add(new Usuario("001","admin","admin"));
     }
 
     public static Controladora getInstance() {
@@ -101,8 +99,21 @@ public class Controladora {
         return pro;
     }
     public Usuario autheticarUsuario(String usuario, String password){
-        //simulando la busqueda en la base de datos.
+        //simulando la busqueda en la base de datos
         return new Usuario(usuario, "Usuario "+usuario, password);
     }
+    public void agregarUsuario(Usuario usuario){
+        misUsuarios.add(usuario);
+    }
 
+    public Usuario buscarUsuario(String name, String password){
+        Usuario auxUsuario = null;
+        for (Usuario a:misUsuarios) {
+            if(a.getNombre().equals(name)&&a.getPassword().equals(password)){
+                auxUsuario = a;
+            }
+        }
+        return  auxUsuario;
+
+}
 }
