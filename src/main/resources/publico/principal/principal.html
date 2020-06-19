@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="CSS/estilos.css">
+	<link rel="stylesheet" type="text/css" href="../principal/CSS/estilos.css">
 </head>
 <body class="sb-nav-fixed">
 
@@ -24,7 +24,7 @@
 		<nav >
 			<ul>
 				<li><a href="#"><span class="icon-house"></span>Inicio</a></li>
-				<li clase="prueba"><a href="#"><span class="carrito"></span class="login" >Login</a></li>
+				<li clase="prueba"><a href="../inisioSesion/index.html"><span class="carrito"></span>Login</a></li>
 				<li><a href="#"><span class="carrito"></span >Carrito() </a></li>
 			</ul>
 		</nav>
@@ -37,7 +37,7 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-						<h2>Lista de productos </h2>
+						<h2 th:text="${titulo}"></h2>
 					</div>
 				
                 </div>
@@ -89,5 +89,5 @@
 	</footer>
 </section>
 </body>
-<script src="JS/myscript.js"></script>
+<script src="../principal/JS/myscript.js"></script>
 </html>                                		
