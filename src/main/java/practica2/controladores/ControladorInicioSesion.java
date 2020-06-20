@@ -32,6 +32,7 @@ private int contador = 0;
 
     @Override
     public void aplicarRutas() {
+
         /**
          * app.route es basicamente para indicar la mayoria de las rutas que javalin estara manejando
          */
@@ -50,9 +51,9 @@ private int contador = 0;
                     ctx.render("/publico/principal/principal.html",modelo);
                 });
                 //Los mismo, puedes usar incluso en el doc HTML un <a ref="dasd" href="/Admin/principal.html> y javalin lo reconocera
-
             });
         });
+
         app.post("/autenticar", ctx -> {
             //Obteniendo la informacion de la petion. Pendiente validar los parametros.
             String nombreUsuario = ctx.formParam("username");
@@ -67,39 +68,22 @@ private int contador = 0;
             Map<String, Object> modelo = new HashMap<>();
             // modelo.put("titulo", "Listado de producto");
             modelo.put("usuario", auxUsuario);
-
             //enviando al sistema de plantilla.
             ctx.render("/publico/Admin/inicio.html", modelo);
             if (auxUsuario != null) {
-
                 ctx.redirect("/administrado");
             } else {
                 modelo.put("Error", "Please check username & password! ");
                 //ctx.redirect("/");//colcoar luego la ruta de login
                 ctx.render("/publico/inisioSesion/index.html", modelo);
-
-
                 System.out.print("Usuario no encontrado. Revise su nombre  de usuario y su password");
             }
-          //  ctx.render("/", modelo);
-            //redireccionando la vista con autorizacion.
-            // ctx.redirect("/zona-admin-clasica/");
+
         });
-        app.get("/administrado", ctx -> {
+
+        app.get("/administrado",ctx -> {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario","Daniel Peña");
-            //Agregar producto
-            try {
-                String name = ctx.queryParam("nombre");//permite obtener lo que se ingre  en parrametro <nomnbre>
-                String p = "0.00";
-                p =  ctx.queryParam("precio");
-                BigDecimal precio= new BigDecimal(p);
-                System.out.println("EL PRECIO ES: "+precio);
-                //Producto miProducto = new Producto("ID-01",name, precio);
-                Controladora.getInstance().crearProducto(name,precio);
-            }catch (Exception e){
-                System.out.println("No se pudo guardar el producto");
-            }
             List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
             modelo.put("titulo", "Listado de producto");
             modelo.put("lista", auxProducto);
@@ -108,26 +92,47 @@ private int contador = 0;
             ctx.render("/publico/Admin/inicio.html",modelo);
 
         });
+
         /**
-         * Redirige a la ventana administravtiva
-         *
+         * Agregar producto y redrigir a ventra admin
+         */
+        app.post("/Menu", ctx -> {
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario","Daniel Peña");
+            //Agregar producto
+            System.out.print(ctx.formParam("addNombre"));
+            try {
+                String name = ctx.formParam("addNombre");//permite obtener lo que se ingre  en parrametro <nomnbre>
+                String p = "0.00";
+                p =  ctx.formParam("addPrecio");
+                BigDecimal precio= new BigDecimal(p);
+               // System.out.println("EL PRECIO ES: "+precio);
+                //Producto miProducto = new Producto("ID-01",name, precio);
+                Controladora.getInstance().crearProducto(name,precio);
+            }catch (Exception e){
+                System.out.println("No se pudo guardar el producto");
+            }
+            ctx.redirect("/administrado");
+
+        });
+
+        /**
+         * Annadir al carrito
+         * Laa ruta update no tiene que ver nada con actualizar, solo que se la puse como referencia
+         * a un archivo html, y para no cambiarlo lo deje igual. Aunque pronto pienseo cambiarlo.
+         * Mas aun, esa ruta solo sirve para agregar al carrito.
          */
         app.post("/update", ctx -> {
-
+            /**
+             * Escribir aqui lo que se va agregar al carrito;
+             */
+            System.out.print("Entrado para annadir al carrito");
             contador++;
             String a = "(" + contador + ")";
             String z;
-            z=ctx.formParam("tel");//entiendo parramento del formulario.
-            //String password = ctx.formParam("password");
-            System.out.print("entrando a metodo post:"+z);
-           // System.out.print(nombreUsuario);
-            Map<String, Object> modelo = new HashMap<>();
-            List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
-            modelo.put("cantCarrito", a);
-            modelo.put("lista", auxProducto);
-           // modelo.put("lista", auxProducto);
-            ctx.render("/publico/principal/principal.html", modelo); //rendrijiendo a pagina principal y pasando render
+            ctx.redirect("/");//rendrijiendo a pagina principal y pasando render
         });
+
         /**
          * Actualizar producto
          */
