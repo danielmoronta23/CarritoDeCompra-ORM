@@ -18,7 +18,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class ControladorInicioSesion extends ControladorBase {
     //List<Usuario> users = Controladora.getControladora().getMisUsuarios();
-
+private int contador = 0;
     public ControladorInicioSesion(Javalin app) {
         super(app);
         registrandoPlantillas();
@@ -45,6 +45,8 @@ public class ControladorInicioSesion extends ControladorBase {
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
                     modelo.put("titulo", "Lista de producto disponible:");
                     modelo.put("lista", auxProducto);
+                    String a = "("+ contador +")";
+                    modelo.put("cantCarrito", a);
                     ctx.render("/publico/principal/principal.html",modelo);
                 });
                 //Los mismo, puedes usar incluso en el doc HTML un <a ref="dasd" href="/Admin/principal.html> y javalin lo reconocera
@@ -93,8 +95,8 @@ public class ControladorInicioSesion extends ControladorBase {
                 p =  ctx.queryParam("precio");
                 BigDecimal precio= new BigDecimal(p);
                 System.out.println("EL PRECIO ES: "+precio);
-                Producto miProducto = new Producto("ID-01",name, precio);
-                Controladora.getInstance().crearProducto(miProducto);
+                //Producto miProducto = new Producto("ID-01",name, precio);
+                Controladora.getInstance().crearProducto(name,precio);
             }catch (Exception e){
                 System.out.println("No se pudo guardar el producto");
             }
@@ -108,6 +110,48 @@ public class ControladorInicioSesion extends ControladorBase {
         });
         /**
          * Redirige a la ventana administravtiva
+         *
          */
+        app.post("/update", ctx -> {
+
+            contador++;
+            String a = "(" + contador + ")";
+            String z;
+            z=ctx.formParam("tel");//entiendo parramento del formulario.
+            //String password = ctx.formParam("password");
+            System.out.print("entrando a metodo post:"+z);
+           // System.out.print(nombreUsuario);
+            Map<String, Object> modelo = new HashMap<>();
+            List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
+            modelo.put("cantCarrito", a);
+            modelo.put("lista", auxProducto);
+           // modelo.put("lista", auxProducto);
+            ctx.render("/publico/principal/principal.html", modelo); //rendrijiendo a pagina principal y pasando render
+        });
+        /**
+         * Actualizar producto
+         */
+        app.post("/administrado",ctx -> {
+            System.out.print("Reciviendo por metodo POST, para editar producto");
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario","Daniel Peña");
+            //Editando producto
+                String id = ctx.formParam("id");//Le pasa como paramento dentro de un formulario
+                String name = ctx.formParam("nombre");//permite obtener lo que se ingre  en parrametro <nomnbre>
+                String p = "0.00";
+                p =  ctx.formParam("precio");
+                BigDecimal precio= new BigDecimal(p);
+                System.out.println("\nID="+id+"PRECIO: "+p+"\n"+"Nombre="+name);
+                System.out.print(Controladora.getInstance().actulizarProducto(id,name,precio));
+                if(true==Controladora.getInstance().actulizarProducto(id,name,precio)){
+                    System.out.print("Actualizado");
+                }
+            List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
+            modelo.put("titulo", "Listado de producto");
+            modelo.put("lista", auxProducto);
+            ctx.render("/publico/Admin/inicio.html",modelo);
+
+        });
     }
+
 }

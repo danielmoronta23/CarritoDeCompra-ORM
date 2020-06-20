@@ -482,7 +482,7 @@
 				</div>
 			</div>
 		</div>
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="table" name="table">
 
 			<thead>
 			<tr>
@@ -497,12 +497,15 @@
 			<tbody>
 			<tr  th:each="Producto : ${lista}">
 				<!--Sirve para darle una mejor vista-->
-				<td></td>
+				<td th:text="${Producto.id}"></td>
 				<td th:text="${Producto.nombre}">
 				</td>
 				<td th:text="${Producto.precio}"></td>
 				<td>
-					<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+					<!--Trantando de enviar parrametros a plantilla of editar-->
+					<a id='ok' href="#editEmployeeModal" class="edit" data-toggle="modal">
+						<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+					</a>
 					<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 				</td>
 			</tr>
@@ -527,7 +530,7 @@
 					</div>
 					<div class="form-group">
 						<label>Precio</label>
-						<input type="number" name="precio" class="form-control" required step=".01">
+						<input type="number" name="precio" id="precio" class="form-control" required step=".01">
 
 					</div>
 				</div>
@@ -539,31 +542,26 @@
 		</div>
 	</div>
 </div>
-<!-- Edit Modal HTML -->
+<!-- Edit Modal HTML --> <!--Editar Product-->
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<!-- Redirecionaldo a la misma pagina y agregando un post-->
+			<form name="f1" id="f1" method="post" action="/administrado" >
 				<div class="modal-header">
-					<h4 class="modal-title">Edit Employee</h4>
+					<h4 class="modal-title">Edit Product</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
 						<label>Name</label>
-						<input type="text" class="form-control" required>
+						<input type="text" class="form-control" required id="nombre" name="nombre">
 					</div>
 					<div class="form-group">
-						<label>Email</label>
-						<input type="email" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label>Address</label>
-						<textarea class="form-control" required></textarea>
-					</div>
-					<div class="form-group">
-						<label>Phone</label>
-						<input type="text" class="form-control" required>
+						<label>Precio RD$:</label>
+						<input type="number"  class="form-control" required step=".01" id="precio" name="precio">
+						<input type="hidden" id="id" name="id" value="">
+
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -597,4 +595,49 @@
 </div>
 
 </body>
+<script >
+	console.log("Entrado a script")
+	$(document).ready(function($){
+		var array = [];
+		console.log("Entrando a funcion editado")
+		/**
+		 *Se debe poner el id de la table con un # delante
+		 */
+		$('#table tbody').on('click','#ok',function(){
+
+			//	console.log("Entrando a funcion");
+			var curRow = $(this).closest('tr');
+			//	var contenido =$('table tbody td');
+			//	console.log(contenido.text);
+			//	console.log(contenido);
+			//   var col1 = curRow.find('td:eq(0)').text();
+			var col0 = curRow.find('td:eq(0)').text();
+			var col1 = curRow.find('td:eq(1)').text();
+			var col2 = curRow.find('td:eq(2)').text();
+			//console.log(curRow);
+			//console.log(col2, col1);
+			array.push(col1)
+			array.push(col2)
+			//console.log("Con array");
+			//alert(array)
+			//alert(array);
+			//alert($("tr.selected td:eq(1)" ).html());
+			//document.getElementsByName('cont1').value = col1;
+			//document.getElementById('cont1').innerHTML=col1;
+			/**
+			 * Acciendiendo al DOM para pasar los valores de la table a venta de editar
+			 */
+			document.f1.id.value = col0;
+			document.f1.nombre.value = col1;
+			document.f1.precio.value = col2;
+			console.log(col1);
+			console.log(col2);
+			console.log(col0);
+
+
+
+		});
+
+	});
+</script>
 </html>                                		

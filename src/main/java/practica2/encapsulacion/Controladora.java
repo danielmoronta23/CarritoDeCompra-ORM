@@ -1,5 +1,7 @@
 package practica2.encapsulacion;
 
+import org.thymeleaf.dialect.IProcessorDialect;
+
 import javax.sql.rowset.CachedRowSet;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.lang.reflect.Array;
@@ -14,12 +16,15 @@ public class Controladora {
     private List<CarroCompra> miCarroComprea = new ArrayList<>();
     private List<Producto> miProducto = new ArrayList<>();
     private List<VentasProductos> misVentasProducto  = new ArrayList<>();
+    private int contID = 0;
 
     /**
      *Implementando el patron Singleton
      */
     public Controladora() {
+        BigDecimal aux = new BigDecimal(10);
         misUsuarios.add(new Usuario("001","admin","admin"));
+        miProducto.add(new Producto("01","Pizza",aux));
     }
 
     public static Controladora getInstance() {
@@ -69,16 +74,18 @@ public class Controladora {
         this.misVentasProducto = misVentasProducto;
     }
 
-    public void crearProducto(Producto producto){
-        miProducto.add(producto);
+    public void crearProducto(String name, BigDecimal precio){
+        String id = "P" + contID;
+        miProducto.add(new Producto(id,name,precio));
+        contID++;
     }
     public boolean actulizarProducto(String ID, String nombre, BigDecimal precio){
         boolean actualizar = false;
         Producto pro = buscarProducto(ID);
-       if(pro!=null){
-            pro.setId(ID);
-            pro.setNombre(nombre);
-            pro.setPrecio(precio);
+
+        if(pro!=null){
+            miProducto.remove(pro);
+            miProducto.add(new Producto(ID, nombre, precio));
             actualizar = true;
         }
        return actualizar;
@@ -92,7 +99,7 @@ public class Controladora {
     public Producto buscarProducto(String ID){
         Producto pro = null;
         for (Producto aux : miProducto) {
-            if (aux.getId()==ID){
+            if (aux.getId().equals(ID)){
                 pro = aux;
             }
         }
