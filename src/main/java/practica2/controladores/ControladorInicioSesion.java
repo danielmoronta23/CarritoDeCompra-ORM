@@ -84,11 +84,7 @@ public class ControladorInicioSesion extends ControladorBase {
         app.get("/carrito",ctx -> {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario","Daniel Peña");
-         //   List<Producto> auxProducto = null;
-          //  auxProducto.add(micaro);
             modelo.put("titulo", "Producto en el carrito");
-           // Producto a = new Producto("oo",new BigDecimal(0));
-            //micaro.add(new ProductoCarrito(new Producto("a1", "Danie", new BigDecimal(1)),1));
             ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) carro.getListaProducto();
             String a = "("+ carro.getCont() +")";
             modelo.put("cantCarrito", a);
@@ -109,6 +105,9 @@ public class ControladorInicioSesion extends ControladorBase {
             modelo.put("lista", auxProducto);
             //que mas ??
             //enviando al sistema de plantilla.
+            /**
+             * Como hacer que si el usuario no se ha identificado que no entre en esta parte?
+             */
             ctx.render("/publico/Admin/inicio.html",modelo);
 
         });
@@ -149,27 +148,13 @@ public class ControladorInicioSesion extends ControladorBase {
          //   System.out.print("Entrado para annadir al carrito\n");
              String idProducto = ctx.formParam("x");
              String cantProducto = ctx.formParam("cant");
-          //  String cantProducto = ctx.formParam("cantProducto");
-            /*
-            contador++;
-            String a = "(" + contador + ")";
-            String z;
-
-             */
-        //    System.out.print("Id="+idProducto);
-        //    System.out.print("\n Cant="+cantProducto);
-
-           Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
-           //  micaro.add( new ProductoCarrito(producto,1));
-            if(producto!=null){
+             Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
+             if(producto!=null){
                   int cantidad = Integer.parseInt(cantProducto);
-               // ProductoCarrito auxP=  new ProductoCarrito(producto, cantidad);
-                //Controladora.getInstance().getMiCarroComprea()
-                    System.out.print("Agreado sactoriamente");
-                    carro.agregarProducto(producto,cantidad);
-                System.out.print("Agregado correctamente!");
-            //    micaro.add(new ProductoCarrito(producto,cantidad));
-               // micaro.add(new ProductoCarrito(new Producto(id, "Danie", new BigDecimal(1)),1));
+                  System.out.print("Agreado sactoriamente");
+                  carro.agregarProducto(producto,cantidad);
+                  System.out.print("Agregado correctamente!");
+
 
             }
              System.out.print("\nCantidad: "+ctx.formParam("cant")); //CANTIDAD PARA AGREGAR AL CARRITO

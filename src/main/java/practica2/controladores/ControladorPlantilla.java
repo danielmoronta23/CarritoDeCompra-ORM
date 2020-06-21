@@ -71,8 +71,8 @@ public class ControladorPlantilla extends ControladorBase {
                         p =  ctx.queryParam("precio");
                         BigDecimal precio= new BigDecimal(p);
                         System.out.println("EL PRECIO ES: "+precio);
-                        Producto miProducto = new Producto("ID-01",name, precio);
-                        Controladora.getInstance().crearProducto(miProducto);
+                     //   Producto miProducto = new Producto("ID-01",name, precio);
+                        Controladora.getInstance().crearProducto(name,precio);
 
                     }catch (Exception e){
                         System.out.println("No se pudo guardar el precio");
