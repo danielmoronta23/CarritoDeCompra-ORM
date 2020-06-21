@@ -1,69 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Inicio de sección</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
-                                    <div class="card-body">
-                                        <form
-                                            <div class="form-group">
-                                                <label class="small mb-1" for="inputEmailAddress">Email</label>
-                                                <input class="form-control py-4" name="email" type="email" placeholder="Enter email address" /></div>
-                                            <div class="form-group">
-                                                <label class="small mb-1" for="inputPassword">Password</label>
-                                                <input class="form-control py-4" name="password" id="inputPassword" type="password" placeholder="Enter password" />
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox"><input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" /><label class="custom-control-label" for="rememberPasswordCheck">Remember password</label></div>
-                                            </div>
-                                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" href="password.html">Forgot Password?
-                                              
-                                            </a><a class="btn btn-primary" href="#">Login</a></div>
-                                        <!----</a><a class="btn btn-primary" href="index.html">Login</a></div>
-                                        -->
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<html lang="en" xmlns:th>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../publico/vistaCarro/estilos.css">
+</head>
+<body class="sb-nav-fixed">
+
+<header >
+    <section class="wrapper">
+        <div class="menu_bar">
+            <a href="#" class="bt-menu"><span class="icon-list2"></span>Menú</a>
+        </div>
+
+        <nav >
+            <ul>
+                <li><a href="#"><span class="icon-house"></span>Inicio</a></li>
+                <li><a  class="modal_form" id="carrito" href="#"><span ></span id="carrito" >Carrito(0) </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+</header>
+<section class="contenido wrapper">
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 th:text="${titulo}"></h2>
                     </div>
-                </main>
+
+                </div>
             </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2019</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+            <table class="table table-striped table-hover" id="table">
+
+                <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>Producto</th>
+                    <th>Precio (RD$) </th>
+                    <th>Acción</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr  th:each="Producto : ${lista}">
+                    <!--Sirve para darle una mejor vista-->
+                    <td></td>
+                    <td > holamundo
+                    </td>
+                    <td th:text="${Producto.precio}"></td>
+                    <td>
+                        <!-- ADD Modal HTML --> <!--Ventana para agregar un producuto-->
+                        <button id="ok">OK</button>
+                        <!--   <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                           <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        -->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <!--Tranto de poner valores "ocultos"-->
+    <form>
+        <div>
+            <input type="text" id="titulo" name="titulo" value="Mi excelente artículo del blog">
+            <input type="hidden" id="acticuloId" name="articuloId" value="34657">
+        </div>
+
+    </form>
+    <footer class="navbar navbar-fixed-bottom">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; DANIEL P. MORONTA:2020 </div>
+                <div id="cont1"></div>
+                <div id="carrito"></div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+    </footer>
+</section>
+</body>
+<script >
+    console.log("Entrado a script")
+    $(document).ready(function($){
+        var array = [];
+        var count_click = 0;
+        $('#table tbody').on('click','#ok',function(){
+            count_click_add();
+            //	console.log("Entrando a funcion");
+            var curRow = $(this).closest('tr');
+            //	var contenido =$('table tbody td');
+            //	console.log(contenido.text);
+            //	console.log(contenido);
+            //   var col1 = curRow.find('td:eq(0)').text();
+            var col1 = curRow.find('td:eq(1)').text();
+            var col2 = curRow.find('td:eq(2)').text();
+            //console.log(curRow);
+            console.log(col1);
+            array.push(col1)
+            array.push(col2)
+            console.log("Con array");
+            //alert(array)
+            //alert(array);
+            //alert($("tr.selected td:eq(1)" ).html());
+            //	document.getElementsByName("test").value = col1;
+            document.getElementById('cont1').innerHTML=col1;
+            //	document.getElementById('carrito').innerHTML='Carrito: '+count_click;
+            var modal =''
+            modal += '<form action="/update" method="POST">'
+            modal+='Carrito: '+count_click
+            modal+= '<input type="hidden"  id="defaultForm-email" class="form-control validate" value="'+col1+'" name="tel">'
+            modal += '</form>'
+            $(document).find('.modal_form').html(modal);
+
+
+        });
+        function count_click_add() {
+            count_click += 1;
+        }
+    });
+</script>
 </html>

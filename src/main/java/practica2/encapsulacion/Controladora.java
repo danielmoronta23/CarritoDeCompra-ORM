@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class Controladora {
-    private static Controladora controladora = null;
+    private static  Controladora controladora = null;
     private List<Usuario> misUsuarios = new ArrayList<>();
     private List<CarroCompra> miCarroComprea = new ArrayList<>();
     private List<Producto> miProducto = new ArrayList<>();
@@ -90,11 +90,14 @@ public class Controladora {
         }
        return actualizar;
     }
-    public void borrarProducto(String ID){
+    public boolean borrarProducto(String ID){
+
         Producto aux = buscarProducto(ID);
         if(aux!=null){
             miProducto.remove(aux);
+            return true;
         }
+        return false;
     }
     public Producto buscarProducto(String ID){
         Producto pro = null;
@@ -123,4 +126,9 @@ public class Controladora {
         return  auxUsuario;
 
 }
+    public void agregarVenta(VentasProductos venta){
+
+        misVentasProducto.add(venta);
+    }
+
 }

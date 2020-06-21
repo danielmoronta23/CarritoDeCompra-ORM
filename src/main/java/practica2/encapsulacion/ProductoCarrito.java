@@ -6,16 +6,28 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class ProductoCarrito {
-    private int cantProducto;
+    private int cantProducto=0;
     private BigDecimal cant_Total;
     private Producto producto;
+    private String IdProductoCarrito;
+    private static int cant = 0;
 
     public ProductoCarrito(Producto producto, int cantProducto) {
+        cant+=1;
+        this.setIdProductoCarrito("PC:"+cant);
         this.cantProducto = cantProducto;
         this.producto = producto;
         this.cantProducto = cantProducto;
         this.cant_Total = this.calcularTotal();
     }
+    public String getIdProductoCarrito() {
+        return IdProductoCarrito;
+    }
+
+    public void setIdProductoCarrito(String idProductoCarrito) {
+        IdProductoCarrito = idProductoCarrito;
+    }
+
     public int getCantProducto() {
         return cantProducto;
     }

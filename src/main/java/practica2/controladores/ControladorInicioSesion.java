@@ -4,21 +4,19 @@ import io.javalin.Javalin;
 import io.javalin.plugin.rendering.JavalinRenderer;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
 import org.attoparser.ParsingXmlDeclarationMarkupUtil;
-import practica2.encapsulacion.Controladora;
-import practica2.encapsulacion.Producto;
-import practica2.encapsulacion.Usuario;
+import practica2.encapsulacion.*;
 import practica2.util.ControladorBase;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class ControladorInicioSesion extends ControladorBase {
     //List<Usuario> users = Controladora.getControladora().getMisUsuarios();
-private int contador = 0;
+    //private Stati List<ProductoCarrito>  micaro = new ArrayList<>();
+    private static final CarroCompra carro = new CarroCompra();
+
     public ControladorInicioSesion(Javalin app) {
         super(app);
         registrandoPlantillas();
@@ -46,7 +44,7 @@ private int contador = 0;
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
                     modelo.put("titulo", "Lista de producto disponible:");
                     modelo.put("lista", auxProducto);
-                    String a = "("+ contador +")";
+                    String a = "("+ carro.getCont() +")";
                     modelo.put("cantCarrito", a);
                     ctx.render("/publico/principal/principal.html",modelo);
                 });
@@ -78,6 +76,28 @@ private int contador = 0;
                 ctx.render("/publico/inisioSesion/index.html", modelo);
                 System.out.print("Usuario no encontrado. Revise su nombre  de usuario y su password");
             }
+
+        });
+        /**
+         * Redirige venta de carrito
+         */
+        app.get("/carrito",ctx -> {
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario","Daniel Peña");
+         //   List<Producto> auxProducto = null;
+          //  auxProducto.add(micaro);
+            modelo.put("titulo", "Producto en el carrito");
+           // Producto a = new Producto("oo",new BigDecimal(0));
+            //micaro.add(new ProductoCarrito(new Producto("a1", "Danie", new BigDecimal(1)),1));
+            ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) carro.getListaProducto();
+            String a = "("+ carro.getCont() +")";
+            modelo.put("cantCarrito", a);
+            modelo.put("lista",aux);
+            modelo.put("total", carro.calcularTotal());
+          //  modelo.put("Lista")
+            //que mas ??
+            //enviando al sistema de plantilla.
+            ctx.render("/publico/vistaCarro/vista.html",modelo);
 
         });
 
@@ -126,10 +146,34 @@ private int contador = 0;
             /**
              * Escribir aqui lo que se va agregar al carrito;
              */
-            System.out.print("Entrado para annadir al carrito");
+         //   System.out.print("Entrado para annadir al carrito\n");
+             String idProducto = ctx.formParam("x");
+             String cantProducto = ctx.formParam("cant");
+          //  String cantProducto = ctx.formParam("cantProducto");
+            /*
             contador++;
             String a = "(" + contador + ")";
             String z;
+
+             */
+        //    System.out.print("Id="+idProducto);
+        //    System.out.print("\n Cant="+cantProducto);
+
+           Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
+           //  micaro.add( new ProductoCarrito(producto,1));
+            if(producto!=null){
+                  int cantidad = Integer.parseInt(cantProducto);
+               // ProductoCarrito auxP=  new ProductoCarrito(producto, cantidad);
+                //Controladora.getInstance().getMiCarroComprea()
+                    System.out.print("Agreado sactoriamente");
+                    carro.agregarProducto(producto,cantidad);
+                System.out.print("Agregado correctamente!");
+            //    micaro.add(new ProductoCarrito(producto,cantidad));
+               // micaro.add(new ProductoCarrito(new Producto(id, "Danie", new BigDecimal(1)),1));
+
+            }
+             System.out.print("\nCantidad: "+ctx.formParam("cant")); //CANTIDAD PARA AGREGAR AL CARRITO
+             System.out.print("\nID: "+ctx.formParam("x")); //ID PARA AGREGAR AL CARRITO
             ctx.redirect("/");//rendrijiendo a pagina principal y pasando render
         });
 
@@ -157,6 +201,63 @@ private int contador = 0;
             ctx.render("/publico/Admin/inicio.html",modelo);
 
         });
+
+        /**
+         * Funcion para borrar producto
+         */
+        app.post("/borrar", ctx -> {
+            System.out.print("Entrando por metodo POST para borrar producto");
+            String id = ctx.formParam("idBorrar") ;
+            if(Controladora.getInstance().borrarProducto(id)==true){
+                System.out.print("Producto Borrado con existo");
+                ctx.redirect("/administrado");
+            }else{
+                System.out.print("El Producto No se Pudo Borrar");
+            }
+
+        });
+
+        app.post("/borrarProducroCarrio", ctx -> {
+            System.out.print("\nEntrando por metodo POST para borrar producto del carrito");
+            String id = ctx.formParam("idBorrar") ;
+            System.out.print("\nID PRODUCTO A BORRAR DE CARRITO: "+id);
+            carro.eliminarProducto(id);
+            System.out.print("\nTamano="+carro.getListaProducto().size());
+            ctx.redirect("/carrito");
+
+           // carro.bor
+        });
+
+        app.post("/agregarCliente", ctx -> {
+            String nombreCliente = ctx.formParam("nombre");
+            try {
+                if( carro.getCont()>0) {
+                    System.out.print("\nSe ha registrado la compra");
+                    ArrayList<ProductoCarrito> auxProducto = (ArrayList<ProductoCarrito>) carro.getListaProducto();
+                    Date fecha = new Date();
+                    VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, auxProducto);
+                    Controladora.getInstance().agregarVenta(auxVenta);
+                    carro.limpiarCarrito();
+                    ctx.redirect("/");
+                }else{
+                    System.out.print("Debe agregar item para realizar compra");
+                }
+
+            }catch (Exception e){
+
+            }
+
+
+        });
+        app.post("/limpiarCarro", ctx -> {
+            carro.limpiarCarrito();
+            ctx.redirect("/");
+
+        });
+
+
+
     }
+
 
 }

@@ -506,7 +506,8 @@
 					<a id='ok' href="#editEmployeeModal" class="edit" data-toggle="modal">
 						<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
 					</a>
-					<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+					<a id="borrar" href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+
 				</td>
 			</tr>
 			</tbody>
@@ -576,7 +577,7 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form name="f2" id="f2" method="post" action="/borrar" >
 				<div class="modal-header">
 					<h4 class="modal-title">Borrar producto</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -587,7 +588,8 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" name="Borrar" class="btn btn-danger" value="Delete">
+					<input type="submit" name="Delete" class="btn btn-danger" value="Delete">
+					<input type="hidden" id="idBorrar" name="idBorrar"  class="btn btn-danger" value="">
 				</div>
 			</form>
 		</div>
@@ -637,7 +639,40 @@
 
 
 		});
+		$('#table tbody').on('click','#borrar',function(){
 
+			//	console.log("Entrando a funcion");
+			var curRow = $(this).closest('tr');
+			//	var contenido =$('table tbody td');
+			//	console.log(contenido.text);
+			//	console.log(contenido);
+			//   var col1 = curRow.find('td:eq(0)').text();
+			var col0 = curRow.find('td:eq(0)').text();
+			var col1 = curRow.find('td:eq(1)').text();
+			var col2 = curRow.find('td:eq(2)').text();
+			//console.log(curRow);
+			//console.log(col2, col1);
+			//array.push(col1)
+			//array.push(col2)
+			//console.log("Con array");
+			//alert(array)
+			//alert(array);
+			//alert($("tr.selected td:eq(1)" ).html());
+			//document.getElementsByName('cont1').value = col1;
+			//document.getElementById('cont1').innerHTML=col1;
+			/**
+			 * Acciendiendo al DOM para pasar los valores de la table a venta de borrar
+			 */
+			document.f2.idBorrar.value = col0;
+			//document.f1.nombre.value = col1;
+			//document.f1.precio.value = col2;
+			//console.log(col1);
+			//console.log(col2);
+			//console.log(col0);
+
+
+
+		});
 	});
 </script>
 </html>                                		

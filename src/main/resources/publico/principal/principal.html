@@ -25,8 +25,8 @@
 			<ul>
 				<li><a href="#"><span class="icon-house"></span>Inicio</a></li>
 				<li clase="prueba"><a href="../inisioSesion/index.html"><span class="carrito"></span>Login</a></li>
-				<li>
-					<a >
+				<li >
+					<a href="/carrito">
 						Carrito
 						<span class="carrito" th:text="${cantCarrito}">
 						</span >
@@ -48,46 +48,68 @@
 				
                 </div>
             </div>
-            <table class="table table-striped table-hover" id="table">
+			<form method="post" action="/update" id="fcarro" class="fcarro" name="fcarro">
 
-                <thead>
-                    <tr>
+				<table class="table table-striped table-hover" id="table">
+					<thead>
+					<tr>
 						<th>ID
 						</th>
-                        <th>Producto</th>
-                        <th>Precio (RD$) </th>
+						<th>Producto</th>
+						<th>Precio (RD$) </th>
+						<th>Cantidad</th>
 						<th>Acción</th>
-   
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr  th:each="Producto : ${lista}">
+
+					</tr>
+					</thead>
+					<tbody>
+					<tr  th:each="Producto : ${lista}">
+
 						<!--Sirve para darle una mejor vista-->
-						<td th:text="${Producto.id}"></td>
+						<td  th:text="${Producto.id}" >
+
+
+						</td>
 						<td th:text="${Producto.nombre}">
 						</td>
-                        <td th:text="${Producto.precio}"></td>
-                        <td>
-								<!-- ADD Modal HTML --> <!--Ventana para agregar un producuto-->
-							<form method="post" action="/update">
-
-								<button id="ok" class="btn btn-default" >Agragar al carrito</button>
-
-							</form>
-
-						
-                         <!--   <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-						 -->
+						<td th:text="${Producto.precio}">
 						</td>
-                    </tr>
-                </tbody>
-            </table>
+
+						<td >
+							<!-- Buscar otra forma mas eficiente-->
+							<input  name="cant" type="number" form="fcarro" min="1" step="1" value="1" />
+						</td>
+						<td >
+							<button id="ok" form="fcarro">
+
+								ok
+
+							</button>
+
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<div>
+					<input type="hidden" form="fcarro" name="x" value="" >
+				</div>
+			</form>
 
 		</div>
-
 	</div>
-	
+		<div id="editEmployeeModal" >
+
+
+					<!-- Redirecionaldo a la misma pagina y agregando un post-->
+					<form name="f1" id="f1" method="post" action="/update" >
+						<!--<div class="form-group"> -->
+								<input type="hidden" class="form-control" required id="nombre" name="nombre">
+								<input type="hidden" id="id" name="id" value="">
+
+					</form>
+
+
+		</div>
 	<footer class="navbar navbar-fixed-bottom">
 		<div class="container-fluid">
 			<div class="d-flex align-items-center justify-content-between small">
