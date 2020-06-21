@@ -15,7 +15,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class ControladorInicioSesion extends ControladorBase {
     //List<Usuario> users = Controladora.getControladora().getMisUsuarios();
     //private Stati List<ProductoCarrito>  micaro = new ArrayList<>();
-    private static final CarroCompra carro = new CarroCompra();
+    private static CarroCompra carro = new CarroCompra();
 
     public ControladorInicioSesion(Javalin app) {
         super(app);
@@ -34,6 +34,7 @@ public class ControladorInicioSesion extends ControladorBase {
         /**
          * app.route es basicamente para indicar la mayoria de las rutas que javalin estara manejando
          */
+
         app.routes(() -> {
             path("/", () ->{ //Reune un grupo de Endpoint para que funcionen en un mismo path o ruta
                 app.get("/", ctx -> {
@@ -56,7 +57,7 @@ public class ControladorInicioSesion extends ControladorBase {
             //Obteniendo la informacion de la petion. Pendiente validar los parametros.
             String nombreUsuario = ctx.formParam("username");
             String password = ctx.formParam("password");
-            System.out.print("Nombre de usuario =" + nombreUsuario + "pass =" + password);
+            System.out.print("\n Nombre de usuario =" + nombreUsuario + "pass =" + password);
             /**
              * Validar usuario
              *
@@ -74,29 +75,46 @@ public class ControladorInicioSesion extends ControladorBase {
                 modelo.put("Error", "Please check username & password! ");
                 //ctx.redirect("/");//colcoar luego la ruta de login
                 ctx.render("/publico/inisioSesion/index.html", modelo);
-                System.out.print("Usuario no encontrado. Revise su nombre  de usuario y su password");
+                System.out.print("\n Usuario no encontrado. Revise su nombre  de usuario y su password");
             }
 
         });
-        /**
-         * Redirige venta de carrito
-         */
-        app.get("/carrito",ctx -> {
+
+        app.get("/lista-Venta", ctx -> {
             Map<String, Object> modelo = new HashMap<>();
-            modelo.put("usuario","Daniel Peña");
+            modelo.put("usuario", "Daniel P. Moronta");
             modelo.put("titulo", "Producto en el carrito");
-            ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) carro.getListaProducto();
-            String a = "("+ carro.getCont() +")";
-            modelo.put("cantCarrito", a);
-            modelo.put("lista",aux);
-            modelo.put("total", carro.calcularTotal());
-          //  modelo.put("Lista")
-            //que mas ??
-            //enviando al sistema de plantilla.
-            ctx.render("/publico/vistaCarro/vista.html",modelo);
+            try {
+                List<VentasProductos> aux = new ArrayList<>();
+                aux  =  Controladora.getControladora().getMisVentasProducto();
+                modelo.put("lista", aux);
+                System.out.print("/SIZE: "+aux.size());
+            }catch (Exception e){
+                System.out.print(e);
+            }
+            ctx.render("/publico/Admin/ventas.html", modelo);
 
         });
 
+        app.get("/carrito", ctx -> {
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario", "Daniel P. Moronta");
+            modelo.put("titulo", "Producto en el carrito");
+            ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) carro.getListaProducto();
+            String a = "(" + carro.getCont() + ")";
+            modelo.put("cantCarrito", a);
+            modelo.put("lista", aux);
+            modelo.put("total", carro.calcularTotal());
+            //  modelo.put("Lista")
+            //que mas ??
+            //enviando al sistema de plantilla.
+            ctx.render("/publico/vistaCarro/vista.html", modelo);
+
+        });
+
+        /**
+         * Redirige venta de carrito
+         */
         app.get("/administrado",ctx -> {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario","Daniel Peña");
@@ -129,7 +147,7 @@ public class ControladorInicioSesion extends ControladorBase {
                 //Producto miProducto = new Producto("ID-01",name, precio);
                 Controladora.getInstance().crearProducto(name,precio);
             }catch (Exception e){
-                System.out.println("No se pudo guardar el producto");
+                System.out.println("\nNo se pudo guardar el producto");
             }
             ctx.redirect("/administrado");
 
@@ -151,11 +169,8 @@ public class ControladorInicioSesion extends ControladorBase {
              Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
              if(producto!=null){
                   int cantidad = Integer.parseInt(cantProducto);
-                  System.out.print("Agreado sactoriamente");
                   carro.agregarProducto(producto,cantidad);
-                  System.out.print("Agregado correctamente!");
-
-
+                 System.out.print("\n Agregando correctamente");
             }
              System.out.print("\nCantidad: "+ctx.formParam("cant")); //CANTIDAD PARA AGREGAR AL CARRITO
              System.out.print("\nID: "+ctx.formParam("x")); //ID PARA AGREGAR AL CARRITO
@@ -166,7 +181,7 @@ public class ControladorInicioSesion extends ControladorBase {
          * Actualizar producto
          */
         app.post("/administrado",ctx -> {
-            System.out.print("Reciviendo por metodo POST, para editar producto");
+            System.out.print("\n Reciviendo por metodo POST, para editar producto");
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario","Daniel Peña");
             //Editando producto
@@ -191,13 +206,13 @@ public class ControladorInicioSesion extends ControladorBase {
          * Funcion para borrar producto
          */
         app.post("/borrar", ctx -> {
-            System.out.print("Entrando por metodo POST para borrar producto");
+            System.out.print("\n Entrando por metodo POST para borrar producto");
             String id = ctx.formParam("idBorrar") ;
             if(Controladora.getInstance().borrarProducto(id)==true){
-                System.out.print("Producto Borrado con existo");
+                System.out.print("\n Producto Borrado con existo");
                 ctx.redirect("/administrado");
             }else{
-                System.out.print("El Producto No se Pudo Borrar");
+                System.out.print("\n El Producto No se Pudo Borrar");
             }
 
         });
@@ -213,30 +228,42 @@ public class ControladorInicioSesion extends ControladorBase {
            // carro.bor
         });
 
+        /**
+         * Permite realizar la compra y colocar el nombre al cliente respetibamente
+         */
         app.post("/agregarCliente", ctx -> {
             String nombreCliente = ctx.formParam("nombre");
+            System.out.print("\n Realizando compra*************\n");
             try {
                 if( carro.getCont()>0) {
                     System.out.print("\nSe ha registrado la compra");
-                    ArrayList<ProductoCarrito> auxProducto = (ArrayList<ProductoCarrito>) carro.getListaProducto();
+                    System.out.print("\n Haciendo compra...");
+                    System.out.print("\n Cantidad de items agregado: "+ carro.getListaProducto().size());
+
+                    List<ProductoCarrito> auxProducto =  carro.getListaProducto();
+                    System.out.print("\n Cantidad de items agregado: "+ auxProducto.size());
+
                     Date fecha = new Date();
                     VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, auxProducto);
                     Controladora.getInstance().agregarVenta(auxVenta);
-                    carro.limpiarCarrito();
-                    ctx.redirect("/");
+                    carro = new CarroCompra(); //para limpiar
+
+                    ctx.redirect("/carrito");
+                    System.out.print("\n Cantidad de items agregado: "+ auxProducto.size());
                 }else{
-                    System.out.print("Debe agregar item para realizar compra");
+                    System.out.print("\n Debe agregar item para realizar compra");
                 }
 
             }catch (Exception e){
 
             }
 
-
+           // carro.limpiarCarrito();
         });
+
         app.post("/limpiarCarro", ctx -> {
             carro.limpiarCarrito();
-            ctx.redirect("/");
+            ctx.redirect("/carrito");
 
         });
 

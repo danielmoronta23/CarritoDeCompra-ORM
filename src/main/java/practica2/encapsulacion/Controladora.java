@@ -1,10 +1,5 @@
 package practica2.encapsulacion;
 
-import org.thymeleaf.dialect.IProcessorDialect;
-
-import javax.sql.rowset.CachedRowSet;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
