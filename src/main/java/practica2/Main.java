@@ -1,21 +1,19 @@
 package practica2;
 
 import io.javalin.Javalin;
-import io.javalin.core.util.RouteOverviewPlugin;
-import practica2.controladores.ControladorInicioSesion;
-import practica2.controladores.ControladorPlantilla;
-import practica2.encapsulacion.Controladora;
+import practica2.controladores.ControladorCarrito;
+import practica2.controladores.ZonaAdmin;
 
 public class Main {
     public static void main(String[] args) {
         //Creando la instancia del servidor.
         Javalin app = Javalin.create(config ->{
             config.addStaticFiles("/publico"); //desde la carpeta de resources
-            config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
-            config.enableCorsForAllOrigins();
         }).start(7000);//AVER Xd
 
-        new ControladorInicioSesion(app).aplicarRutas();
+      //  new ControladorInicioSesion(app).aplicarRutas();
+       new ControladorCarrito(app).aplicarRutas();
+        new ZonaAdmin(app).aplicarRutas();
 
     }
     /**
