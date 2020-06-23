@@ -45,7 +45,7 @@ public class ControladorInicioSesion extends ControladorBase {
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
                     modelo.put("titulo", "Lista de producto disponible:");
                     modelo.put("lista", auxProducto);
-                    String a = "("+ carro.getCont() +")";
+                    String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
                     modelo.put("cantCarrito", a);
                     ctx.render("/publico/principal/principal.html",modelo);
                 });
@@ -100,11 +100,11 @@ public class ControladorInicioSesion extends ControladorBase {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario", "Daniel P. Moronta");
             modelo.put("titulo", "Producto en el carrito");
-            ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) carro.getListaProducto();
-            String a = "(" + carro.getCont() + ")";
+            ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
+            String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
             modelo.put("cantCarrito", a);
             modelo.put("lista", aux);
-            modelo.put("total", carro.calcularTotal());
+            modelo.put("total", (((CarroCompra) ctx.sessionAttribute("carrito")).calcularTotal()));
             //  modelo.put("Lista")
             //que mas ??
             //enviando al sistema de plantilla.
@@ -168,8 +168,11 @@ public class ControladorInicioSesion extends ControladorBase {
              String cantProducto = ctx.formParam("cant");
              Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
              if(producto!=null){
+
                   int cantidad = Integer.parseInt(cantProducto);
-                  carro.agregarProducto(producto,cantidad);
+                 ((CarroCompra) ctx.sessionAttribute("carrito")).agregarProducto(producto,
+                         cantidad);
+               //   carro.agregarProducto(producto,cantidad);
                  System.out.print("\n Agregando correctamente");
             }
              System.out.print("\nCantidad: "+ctx.formParam("cant")); //CANTIDAD PARA AGREGAR AL CARRITO
@@ -235,22 +238,25 @@ public class ControladorInicioSesion extends ControladorBase {
             String nombreCliente = ctx.formParam("nombre");
             System.out.print("\n Realizando compra*************\n");
             try {
-                if( carro.getCont()>0) {
+                if( ((CarroCompra) ctx.sessionAttribute("carrito")).getCont()>0) {
                     System.out.print("\nSe ha registrado la compra");
                     System.out.print("\n Haciendo compra...");
                     System.out.print("\n Cantidad de items agregado: "+ carro.getListaProducto().size());
+                    ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
 
-                    List<ProductoCarrito> auxProducto =  carro.getListaProducto();
-                    System.out.print("\n Cantidad de items agregado: "+ auxProducto.size());
+                  // List<ProductoCarrito> auxProducto =  carro.getListaProducto();
+                    System.out.print("\n Cantidad de items agregado: "+ aux.size());
 
                     Date fecha = new Date();
-                    VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, auxProducto);
+                    VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, aux);
                     Controladora.getInstance().agregarVenta(auxVenta);
-                    carro = new CarroCompra(); //para limpiar
+                    //carro = new CarroCompra(); //para limpiar
 
+                    ((CarroCompra) ctx.sessionAttribute("carrito")).limpiarCarrito();
                     ctx.redirect("/carrito");
-                    System.out.print("\n Cantidad de items agregado: "+ auxProducto.size());
+                    System.out.print("\n Cantidad de items agregado: "+ aux.size());
                 }else{
+                    ctx.redirect("/carrito");
                     System.out.print("\n Debe agregar item para realizar compra");
                 }
 
@@ -267,7 +273,17 @@ public class ControladorInicioSesion extends ControladorBase {
 
         });
 
+        /**
+         * Creando session
+         */
+        app.before(ctx -> {
+            CarroCompra carrito = ctx.sessionAttribute("carrito");
 
+            if (carrito == null) {
+                carrito = new CarroCompra();
+                ctx.sessionAttribute("carrito", carrito);
+            }
+        });
 
     }
 

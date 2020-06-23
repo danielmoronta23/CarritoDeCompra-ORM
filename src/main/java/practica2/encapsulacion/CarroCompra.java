@@ -71,7 +71,8 @@ public class CarroCompra {
         return listaProducto;
     }
     public void limpiarCarrito(){
-        listaProducto.clear();
+        this.listaProducto = new ArrayList<>();
+
         cont =0;
     }
 
