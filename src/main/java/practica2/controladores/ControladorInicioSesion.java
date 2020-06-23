@@ -15,7 +15,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class ControladorInicioSesion extends ControladorBase {
     //List<Usuario> users = Controladora.getControladora().getMisUsuarios();
     //private Stati List<ProductoCarrito>  micaro = new ArrayList<>();
-    private static CarroCompra carro = new CarroCompra();
+
 
     public ControladorInicioSesion(Javalin app) {
         super(app);
@@ -45,6 +45,10 @@ public class ControladorInicioSesion extends ControladorBase {
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
                     modelo.put("titulo", "Lista de producto disponible:");
                     modelo.put("lista", auxProducto);
+                  //  modelo.put("lista",
+                   //         (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()));
+
+
                     String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
                     modelo.put("cantCarrito", a);
                     ctx.render("/publico/principal/principal.html",modelo);
@@ -224,8 +228,8 @@ public class ControladorInicioSesion extends ControladorBase {
             System.out.print("\nEntrando por metodo POST para borrar producto del carrito");
             String id = ctx.formParam("idBorrar") ;
             System.out.print("\nID PRODUCTO A BORRAR DE CARRITO: "+id);
-            carro.eliminarProducto(id);
-            System.out.print("\nTamano="+carro.getListaProducto().size());
+            ((CarroCompra) ctx.sessionAttribute("carrito")).eliminarProducto(id);
+          //  System.out.print("\nTamano="+((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto().size());
             ctx.redirect("/carrito");
 
            // carro.bor
@@ -241,7 +245,7 @@ public class ControladorInicioSesion extends ControladorBase {
                 if( ((CarroCompra) ctx.sessionAttribute("carrito")).getCont()>0) {
                     System.out.print("\nSe ha registrado la compra");
                     System.out.print("\n Haciendo compra...");
-                    System.out.print("\n Cantidad de items agregado: "+ carro.getListaProducto().size());
+                    System.out.print("\n Cantidad de items agregado: "+ ((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto().size());
                     ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
 
                   // List<ProductoCarrito> auxProducto =  carro.getListaProducto();
@@ -268,11 +272,10 @@ public class ControladorInicioSesion extends ControladorBase {
         });
 
         app.post("/limpiarCarro", ctx -> {
-            carro.limpiarCarrito();
+            ((CarroCompra) ctx.sessionAttribute("carrito")).limpiarCarrito();
             ctx.redirect("/carrito");
 
         });
-
         /**
          * Creando session
          */
@@ -284,6 +287,9 @@ public class ControladorInicioSesion extends ControladorBase {
                 ctx.sessionAttribute("carrito", carrito);
             }
         });
+
+
+
 
     }
 
