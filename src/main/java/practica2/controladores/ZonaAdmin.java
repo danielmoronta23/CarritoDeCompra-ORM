@@ -54,9 +54,6 @@ public class ZonaAdmin extends ControladorBase {
 
                 });
 
-                get("/hola", ctx -> {
-                    System.out.println("Hola mundo");
-                });
 
             });
 
@@ -116,10 +113,10 @@ public class ZonaAdmin extends ControladorBase {
                 /**
                  * No existe, tiene que iniciar session
                  */
-                System.out.println("Verificando si es null");
+
                 ctx.redirect("/iniciarSession");
             }else{
-                System.out.println("Verificando si campeon");
+
             }
 
         });

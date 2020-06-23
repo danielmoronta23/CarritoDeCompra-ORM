@@ -2,6 +2,7 @@ package practica2;
 
 import io.javalin.Javalin;
 import practica2.controladores.ControladorCarrito;
+import practica2.controladores.ControladorPlantilla;
 import practica2.controladores.ZonaAdmin;
 
 public class Main {
@@ -9,10 +10,9 @@ public class Main {
         //Creando la instancia del servidor.
         Javalin app = Javalin.create(config ->{
             config.addStaticFiles("/publico"); //desde la carpeta de resources
-        }).start(7000);//AVER Xd
-
-      //  new ControladorInicioSesion(app).aplicarRutas();
-       new ControladorCarrito(app).aplicarRutas();
+        }).start(7000);
+        new ControladorPlantilla(app);
+        new ControladorCarrito(app).aplicarRutas();
         new ZonaAdmin(app).aplicarRutas();
 
     }
