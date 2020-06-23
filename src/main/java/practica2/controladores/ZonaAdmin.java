@@ -65,12 +65,6 @@ public class ZonaAdmin extends ControladorBase {
 
         app.get("/iniciarSession", ctx -> {
             ctx.render("/publico/inisioSesion/index.html");
-
-            /**
-             *
-             */
-         //   ctx.render("/publico/inisioSesion/index.html");
-
         });
         app.post("/autenticar", ctx -> {
             String nombreUsuario = ctx.formParam("username");
@@ -90,17 +84,14 @@ public class ZonaAdmin extends ControladorBase {
             if (auxUsuario != null) {
 
                 ctx.sessionAttribute("usuario", auxUsuario);
-                //  ctx.redirect("/"
                 ctx.redirect("/zonaAdmin");
-                //ctx.render("/publico/Admin/inicio.html", modelo);
             } else {
                 modelo.put("Error", "Please check username & password! ");
-                //ctx.redirect("/");//colcoar luego la ruta de login
                 ctx.render("/publico/inisioSesion/index.html", modelo);
                 System.out.print("\n Usuario no encontrado. Revise su nombre  de usuario y su password");
             }
 
-            System.out.println("Entrnado a inciiar sesion");
+            System.out.println("Entrando a inciar sesion");
 
         });
         app.get("/zonaAdmin/lista-Venta", ctx -> {

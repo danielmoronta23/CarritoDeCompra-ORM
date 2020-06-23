@@ -19,9 +19,6 @@ public class ControladorCarrito extends ControladorBase {
         app.routes(() -> {
             path("/", () ->{ //Reune un grupo de Endpoint para que funcionen en un mismo path o ruta
                 app.get("/", ctx -> {
-                    //render es la funcion para renderizar (crear vista) de la pagina que queremos PROBEMOS!
-                    //ctx.cookie("usuario", "nombre de usuario"); //permite crear una cookie
-                    //ctx.render("/publico/inisioSesion/index.html"); //ctx es el contexto que usa Javalin para manejar los endpoint
                     Map<String, Object> modelo = new HashMap<>();
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
                     modelo.put("titulo", "Lista de producto disponible:");
@@ -30,7 +27,6 @@ public class ControladorCarrito extends ControladorBase {
                     modelo.put("cantCarrito", a);
                     ctx.render("/publico/principal/principal.html",modelo);
                 });
-                //Los mismo, puedes usar incluso en el doc HTML un <a ref="dasd" href="/Admin/principal.html> y javalin lo reconocera
             });
         });
 
@@ -118,13 +114,11 @@ public class ControladorCarrito extends ControladorBase {
                     System.out.print("\n Cantidad de items agregado: "+((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto().size());
                     ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
 
-                    // List<ProductoCarrito> auxProducto =  carro.getListaProducto();
                     System.out.print("\n Cantidad de items agregado: "+ aux.size());
 
                     Date fecha = new Date();
                     VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, aux);
                     Controladora.getInstance().agregarVenta(auxVenta);
-                    //carro = new CarroCompra(); //para limpiar
 
                     ((CarroCompra) ctx.sessionAttribute("carrito")).limpiarCarrito();
                     ctx.redirect("/carrito");
@@ -138,7 +132,6 @@ public class ControladorCarrito extends ControladorBase {
 
             }
 
-            // carro.limpiarCarrito();
         });
 
         app.post("/limpiarCarro", ctx -> {
@@ -149,8 +142,6 @@ public class ControladorCarrito extends ControladorBase {
 
         /**
          * Creando session
-         */
-        /**
          * Ante de acceder a cualquier ruta, se verifica si existe un "Carrrio" sesion
          */
         app.before(ctx -> {
