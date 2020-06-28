@@ -72,7 +72,7 @@ public class ZonaAdmin extends ControladorBase {
              *
              */
             Usuario auxUsuario = null;
-            auxUsuario = Controladora.getInstance().buscarUsuario(nombreUsuario, password);
+            auxUsuario = Controladora.getInstance().autenticarUsuario(nombreUsuario, password);
             Map<String, Object> modelo = new HashMap<>();
             // modelo.put("titulo", "Listado de producto");
             modelo.put("usuario", auxUsuario);
