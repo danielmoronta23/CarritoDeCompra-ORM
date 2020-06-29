@@ -55,13 +55,58 @@ public class servicioUsuario {
             //simula un cursor
             while(rs.next()){
                  auxUsuario = new Usuario(
-                        rs.getString("ID"),
                         rs.getString("NOMBRE"),
                         rs.getString("PASSWORD"));
+                 auxUsuario.setId(  rs.getString("ID"));
+                 System.out.println("ID->"+rs.getString("ID"));
             }
+
             if (auxUsuario != null) {
                 System.out.println("USUARIO ENCONTRADO\n");
 
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(servicioUsuario.class.getName()).log(Level.SEVERE, null, e);
+        } finally{
+            try {
+                con.close(); //cerrando conexion
+            } catch (SQLException e) {
+                Logger.getLogger(servicioUsuario.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return  auxUsuario;
+    }
+
+
+    public static Usuario buscarUsuario(String id) {
+        Usuario auxUsuario = null;
+        Connection con = null;
+
+        try {
+            String sql = "SELECT * FROM USUARIO\n" +
+                    "WHERE NOMBRE LIKE ? ";
+            con = ConexionBD.getInstance().getConexion();
+            PreparedStatement prepareStatement = con.prepareStatement(sql);
+
+            prepareStatement.setString(1, id);
+
+
+            ResultSet rs = prepareStatement.executeQuery();
+
+            //simula un cursor
+            while(rs.next()){
+                auxUsuario = new Usuario(
+                        rs.getString("NOMBRE"),
+                        rs.getString("PASSWORD"));
+                auxUsuario.setId(  rs.getString("ID"));
+                System.out.println("ID->"+rs.getString("ID"));
+            }
+
+            if (auxUsuario != null) {
+                System.out.println("USUARIO ENCONTRADO\n");
+
+            }else{
+                System.out.println("USUARIO NO EXISTE\n");
             }
         } catch (SQLException e) {
             Logger.getLogger(servicioUsuario.class.getName()).log(Level.SEVERE, null, e);

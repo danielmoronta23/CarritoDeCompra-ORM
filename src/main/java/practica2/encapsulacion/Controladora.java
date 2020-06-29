@@ -2,6 +2,7 @@ package practica2.encapsulacion;
 
 import org.thymeleaf.standard.processor.StandardAltTitleTagProcessor;
 import practica2.services.ServicioProducto;
+import practica2.services.ServicioVenta;
 import practica2.services.servicioUsuario;
 
 import java.math.BigDecimal;
@@ -17,11 +18,14 @@ public class Controladora {
      */
     public Controladora() {
         BigDecimal aux = new BigDecimal(10);
-        /**
-         if(agregarUsuario(new Usuario("001","admin","admin"))==true){
-         System.out.println("Usuario agregado de forma correcta\n");
-         }
-         */
+
+        if(servicioUsuario.buscarUsuario(String.valueOf(1))==null) {
+            if (agregarUsuario(new Usuario("admin", "admin")) == true) {
+                System.out.println("Usuario por defecto agregado de forma correcta\n");
+            }
+        }
+
+
         //misUsuarios.add(new Usuario("001","admin","admin"));
         // miProducto.add(new Producto("01","Pizza",aux));
     }
@@ -43,6 +47,8 @@ public class Controladora {
      * @return
      */
     public static boolean agregarUsuario(Usuario usuario){
+            GeneradorID a = new GeneradorID();
+            usuario.setId( a.generarID("C", usuario));
         return servicioUsuario.crearUsuario(usuario);
     }
     public static Usuario autenticarUsuario(String usuario, String password){
@@ -50,9 +56,12 @@ public class Controladora {
     }
     //GRUD PRODUCTO
     public void crearProducto(String name, BigDecimal precio){
-        String id = "P" + ServicioProducto.listaProducto().size();//verificar esta parte del ID
-        ServicioProducto.crarProducto(new Producto(id,name,precio));
-
+        Producto aux = null;
+        GeneradorID a = new GeneradorID();
+        ServicioProducto.crarProducto(new Producto(
+                a.generarID("P",aux),
+                name,
+                precio));
     }
     public boolean borrarProducto(String ID){
         return ServicioProducto.borrarProducto(ID);
@@ -69,17 +78,30 @@ public class Controladora {
         return ServicioProducto.buscaProudcto(ID);
     }
 
+    //Funciones para venta
+    public void agregarVenta(VentasProductos venta){
+        GeneradorID a = new GeneradorID();
+        venta.setId( a.generarID("V", venta));
+        ServicioVenta.realizarVenta(venta);
+    }
+    public List<VentasProductos> getMisVentasProducto() {
+
+        List<VentasProductos> aux = new ArrayList<>();
+        aux = ServicioVenta.listaVenta();
+        for (VentasProductos a: aux) {
+
+            a.setListaProducto(ServicioVenta.listaProductoVenta(a.getId()));
 
 
+        }
+        return aux;
+    }
 
 
     /**
-     * Proyecto antiguo, se esta actualizando para que se compatible con BD
+     * Proyecto antiguo, se esta actualizando para que sea compatible con BD
      */
-    public void agregarVenta(VentasProductos venta){
 
-        misVentasProducto.add(venta);
-    }
     private List<CarroCompra> miCarroComprea = new ArrayList<>();
     public List<CarroCompra> getMiCarroComprea() {
         return miCarroComprea;
@@ -87,12 +109,7 @@ public class Controladora {
     public void setMiCarroComprea(List<CarroCompra> miCarroComprea) {
         this.miCarroComprea = miCarroComprea;
     }
-    public List<VentasProductos> getMisVentasProducto() {
-        return misVentasProducto;
-    }
-    public void setMisVentasProducto(List<VentasProductos> misVentasProducto) {
-        this.misVentasProducto = misVentasProducto;
-    }
-    private List<VentasProductos> misVentasProducto  = new ArrayList<>();
+
+
     private int contID = 0;
 }

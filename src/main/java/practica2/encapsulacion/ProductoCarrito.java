@@ -20,6 +20,11 @@ public class ProductoCarrito {
         this.cantProducto = cantProducto;
         this.cant_Total = this.calcularTotal();
     }
+
+    public ProductoCarrito() {
+
+    }
+
     public String getIdProductoCarrito() {
         return IdProductoCarrito;
     }
@@ -51,9 +56,10 @@ public class ProductoCarrito {
     public void setCantProducto(int cantProducto) {
         this.cantProducto = cantProducto;
     }
-    private BigDecimal calcularTotal() {
-        BigDecimal total = BigDecimal.valueOf(this.cantProducto * this.producto.getPrecio().doubleValue());
 
+    public BigDecimal calcularTotal() {
+        BigDecimal total = BigDecimal.valueOf(this.cantProducto * this.producto.getPrecio().doubleValue());
+        this.setCant_Total(total);
         return total.setScale(2, RoundingMode.CEILING);
     }
 

@@ -113,7 +113,14 @@ public class ControladorCarrito extends ControladorBase {
                     System.out.print("\n Haciendo compra...");
                     System.out.print("\n Cantidad de items agregado: "+((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto().size());
                     ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
-
+                    for (ProductoCarrito a:aux)
+                    {
+                        System.out.println("\n");
+                        System.out.println("ID-PRODUCTO AGREGADO: "+a.getIdProductoCarrito());
+                        System.out.println("\n");
+                        System.out.println("ID-PRODUCTO : "+a.getProducto().getId());
+                        System.out.println("\n");
+                    }
                     System.out.print("\n Cantidad de items agregado: "+ aux.size());
 
                     Date fecha = new Date();

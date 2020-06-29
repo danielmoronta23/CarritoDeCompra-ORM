@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import practica2.controladores.ControladorCarrito;
 import practica2.controladores.ControladorPlantilla;
 import practica2.controladores.ZonaAdmin;
+import practica2.encapsulacion.Controladora;
 import practica2.services.CrearTablas;
 
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ public class Main {
         new ControladorPlantilla(app);
         new ControladorCarrito(app).aplicarRutas();
         new ZonaAdmin(app).aplicarRutas();
+       //  Controladora.getInstance();
         /**
          * Iniciando en modo servidor la BD
          */
@@ -24,6 +26,7 @@ public class Main {
             CrearTablas crearTablas = new CrearTablas();
             crearTablas.InciarBD();
             crearTablas.crearTablas();
+            Controladora.getInstance();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 public class ServicioProducto {
 
-
     public static boolean crarProducto(Producto producto){
         boolean estado = false;
         Connection con = null;
@@ -95,6 +94,7 @@ public class ServicioProducto {
         }
         return estado;
     }
+
     public static Producto buscaProudcto(String id){
         Producto auxProducto = null;
         Connection con = null;
@@ -124,6 +124,7 @@ public class ServicioProducto {
         }
         return auxProducto;
     }
+
     public static List<Producto> listaProducto(){
         List<Producto> auxProducto = new ArrayList<>();
         Connection con = null;

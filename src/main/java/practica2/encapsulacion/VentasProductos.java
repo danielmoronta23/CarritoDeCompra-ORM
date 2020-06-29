@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class VentasProductos {
+
     private static int cont = 0;
     private String id;
     private Date fechaCompra;
@@ -16,6 +17,10 @@ public class VentasProductos {
         this.fechaCompra = fechaCompra;
         this.nombreCliente = nombreCliente;
         this.listaProducto = listaProducto;
+    }
+    public VentasProductos(){
+
+
     }
 
     public String getId() {
@@ -48,5 +53,6 @@ public class VentasProductos {
 
     public void setListaProducto(List<ProductoCarrito> listaProducto) {
         this.listaProducto = listaProducto;
+
     }
 }
