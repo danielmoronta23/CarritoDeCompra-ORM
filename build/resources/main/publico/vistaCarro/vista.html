@@ -28,7 +28,7 @@
 			<ul>
 				<li><a href="/"><span class="icon-house"></span>Inicio</a></li>
 				<li clase="prueba"><a href="../inisioSesion/index.html"><span class="carrito"></span>Login</a></li>
-				<li><a href="#"> Carrito
+				<li><a href="/carrito"> Carrito
 					<span class="icon-house" th:text="${cantCarrito}"></span >  </a></li>
 
 			</ul>
@@ -194,22 +194,15 @@ $(document).ready(function($){
 	var count_click = 0;
 	$('#table tbody').on('click','#ok',function(){
 		count_click_add();
-	//	console.log("Entrando a funcion");
         var curRow = $(this).closest('tr');
 
 		var col1 = curRow.find('td:eq(1)').text();
 		var col2 = curRow.find('td:eq(2)').text();
-		//console.log(curRow);
 		console.log(col1);
 		array.push(col1)
 		array.push(col2)
 		console.log("Con array");
-		//alert(array)
-        //alert(array);
-		//alert($("tr.selected td:eq(1)" ).html());
-	//	document.getElementsByName("test").value = col1;
 		document.getElementById('cont1').innerHTML=col1;
-	//	document.getElementById('carrito').innerHTML='Carrito: '+count_click;
 		var modal =''
 		modal += '<form action="/update" method="POST">'
 			modal+='Carrito: '+count_click
@@ -217,18 +210,12 @@ $(document).ready(function($){
 			modal += '</form>'
 			$(document).find('.modal_form').html(modal);
 
-
-
 	});
 
 	$('#table tbody').on('click','#borrar',function(){
 
 		//	console.log("Entrando a funcion");
 		var curRow = $(this).closest('tr');
-		//	var contenido =$('table tbody td');
-		//	console.log(contenido.text);
-		//	console.log(contenido);
-		//   var col1 = curRow.find('td:eq(0)').text();
 		var col0 = curRow.find('td:eq(0)').text();
 
 		/**
@@ -238,15 +225,13 @@ $(document).ready(function($){
 	});
 
 	const boton = document.querySelector("#realizarCompra");
-	// Agregar listener
-	//boton.addEventListener("click", function(evento){
 		// Aquí todo el código que se ejecuta cuando se da click al botón
 		//alert("Le has dado click");
 		const a =document.getElementById("bloque");
 		const valor = document.getElementById("alerta");
 		if(valor.value==0){
 			//alert("Es  mayor a -1")
-			a.innerHTML = "<div class=\"alert alert-success\" role=\"alert\">"+"<strong>"+"Bien hecho!"+"</strong>" +"Su compra se ha realizado sactifactoriamente."+"</div>"
+			a.innerHTML = "<div class=\"alert alert-success\" role=\"alert\">"+"<strong>"+"Bien hecho!"+"</strong>" +" Su compra se ha realizado satisfactoriamente."+"</div>"
 		}
 		if(valor.value==1){
 			//("Es  mayor a 0")
@@ -254,10 +239,6 @@ $(document).ready(function($){
 
 
 		}
-		//alert(" valor "+valor.value);
-		//Seguir para agragar alertas, de forma que se le deje saber al usuario que se hizo la compra
-		//a.innerHTML = "<div class=\"alert alert-success\" role=\"alert\">"
-	//});
 
 function count_click_add() {
   count_click += 1;

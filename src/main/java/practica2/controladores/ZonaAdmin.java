@@ -83,6 +83,7 @@ public class ZonaAdmin extends ControladorBase {
             ctx.removeCookie("usuario");
             ctx.removeCookie("password");
             ctx.redirect("/inisioSesion");
+            ctx.sessionAttribute("usuario", null);
         });
         app.get("/iniciarSession", ctx -> {
             ctx.render("/publico/inisioSesion/index.html");
