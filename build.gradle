@@ -16,6 +16,7 @@ dependencies {
     compile "org.slf4j:slf4j-simple:1.7.28"
     compile "org.thymeleaf:thymeleaf:3.0.9.RELEASE" //Thymeleaf
     compile 'com.h2database:h2:1.4.191' //agregando dependencia de H2, represanta el Drive
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.3' //agrenaado liberia para encriptar
 
 
 

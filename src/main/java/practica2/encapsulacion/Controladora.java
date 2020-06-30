@@ -19,7 +19,7 @@ public class Controladora {
     public Controladora() {
         BigDecimal aux = new BigDecimal(10);
 
-        if(servicioUsuario.buscarUsuario(String.valueOf(1))==null) {
+        if(servicioUsuario.buscarUsuario("admin")==null) {
             if (agregarUsuario(new Usuario("admin", "admin")) == true) {
                 System.out.println("Usuario por defecto agregado de forma correcta\n");
             }

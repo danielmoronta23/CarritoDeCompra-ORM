@@ -1,6 +1,9 @@
 package practica2.controladores;
 
 import io.javalin.Javalin;
+
+
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import practica2.encapsulacion.Controladora;
 import practica2.encapsulacion.Producto;
 import practica2.encapsulacion.Usuario;
@@ -16,6 +19,7 @@ import java.util.Map;
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class ZonaAdmin extends ControladorBase {
+    private static String mpCryptoPassword = "BornToFight";
 
     public ZonaAdmin(Javalin app) {
         super(app);
@@ -34,14 +38,29 @@ public class ZonaAdmin extends ControladorBase {
                      */
                     System.out.println("Entrando a before");
                     Usuario usuario = ctx.sessionAttribute("usuario");
+                    //tratandodo de hacer con la cookie
+
                     if(usuario==null){
                         /**
                          * No existe, tiene que iniciar session
                          */
+                        String nombre_Usuario = ctx.cookie("usuario");
+                        String password_Encriptada = ctx.cookie("password");
+                        if(nombre_Usuario != null  && password_Encriptada !=null){
+                            //eso quiere decir que hay una cookie creada
+                            StandardPBEStringEncryptor decryptor = new StandardPBEStringEncryptor();
+                            decryptor.setPassword(mpCryptoPassword);
+                            usuario  = Controladora.getInstance().autenticarUsuario(nombre_Usuario, decryptor.decrypt(password_Encriptada));
+                           if(usuario != null){
+                               ctx.sessionAttribute("usuario", usuario);
+                            }
+
+                        }
                         System.out.println("Verificando si es null");
                         ctx.redirect("/iniciarSession");
+
                     }else{
-                        System.out.println("Verificando si campeon");
+                        //System.out.println("Verificando si campeon");
                     }
                 });
                 get(ctx -> {
@@ -59,14 +78,24 @@ public class ZonaAdmin extends ControladorBase {
 
         });
 
-
+        app.get("/logout", ctx -> {
+            System.out.println("Eliminado Cookie: Usuario & Password\n");
+            ctx.removeCookie("usuario");
+            ctx.removeCookie("password");
+            ctx.redirect("/inisioSesion");
+        });
         app.get("/iniciarSession", ctx -> {
             ctx.render("/publico/inisioSesion/index.html");
         });
         app.post("/autenticar", ctx -> {
+            //Ssi el checkbok es seleciona devuelve "on"
+            String estadoRecodar= "";
+            //creando cookie para recodar usuario y contrsenna
+
+           // System.out.println("\nESTADO CHECKBOK-> " + ctx.formParam("Recordar"));
             String nombreUsuario = ctx.formParam("username");
             String password = ctx.formParam("password");
-            System.out.print("\n Nombre de usuario =" + nombreUsuario + "pass =" + password);
+           // System.out.print("\n Nombre de usuario =" + nombreUsuario + "pass =" + password);
             /**
              * Validar usuario
              *
@@ -78,7 +107,23 @@ public class ZonaAdmin extends ControladorBase {
             modelo.put("usuario", auxUsuario);
             //enviando al sistema de plantilla.
 
+
+            //Se validad es usuario
             if (auxUsuario != null) {
+                estadoRecodar =  ctx.formParam("Recordar");
+                if(estadoRecodar!=null){
+                    if(estadoRecodar.equalsIgnoreCase("ON")){
+                        //Creando cookie para recordar usuario
+                        System.out.println("Creando cookie...\n");
+                        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+                        encryptor.setPassword(mpCryptoPassword);
+                        encryptor.encrypt(auxUsuario.getPassword());
+
+                        ctx.cookie("usuario", auxUsuario.getNombre(), 604800);// se crea la cookie por una semana
+                        ctx.cookie("password",   encryptor.encrypt(auxUsuario.getPassword()), 604800);
+                        //System.out.println("Contrse;a desc--" +encryptor.decrypt( encryptor.encrypt(auxUsuario.getPassword())));
+                    }
+                }
 
                 ctx.sessionAttribute("usuario", auxUsuario);
                 ctx.redirect("/zonaAdmin");
@@ -140,18 +185,18 @@ public class ZonaAdmin extends ControladorBase {
 
         });
         app.post("/borrar", ctx -> {
-            System.out.print("\n Entrando por metodo POST para borrar producto");
+            System.out.print("Entrando por metodo POST para borrar producto\n");
             String id = ctx.formParam("idBorrar") ;
             if(Controladora.getInstance().borrarProducto(id)==true){
-                System.out.print("\n Producto Borrado con existo");
+                System.out.print("Producto Borrado con existo\n");
                 ctx.redirect("/zonaAdmin");
             }else{
-                System.out.print("\n El Producto No se Pudo Borrar");
+                System.out.print("El Producto No se Pudo Borrar\n");
             }
 
         });
         app.post("/administrado",ctx -> {
-            System.out.print("\n Reciviendo por metodo POST, para editar producto");
+            System.out.print("Reciviendo por metodo POST, para editar producto\n");
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario","Daniel Peña");
             //Editando producto
@@ -176,4 +221,8 @@ public class ZonaAdmin extends ControladorBase {
 
 
     }
+
+
+
+
 }

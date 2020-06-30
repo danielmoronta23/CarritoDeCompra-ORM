@@ -13,12 +13,13 @@ public class ControladorCarrito extends ControladorBase {
     public ControladorCarrito(Javalin app) {
         super(app);
     }
-
+    private static int alerta = -1;
     @Override
     public void aplicarRutas() {
         app.routes(() -> {
             path("/", () ->{ //Reune un grupo de Endpoint para que funcionen en un mismo path o ruta
                 app.get("/", ctx -> {
+                    alerta = -1;
                     Map<String, Object> modelo = new HashMap<>();
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
                     modelo.put("titulo", "Lista de producto disponible:");
@@ -34,6 +35,7 @@ public class ControladorCarrito extends ControladorBase {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario", "Daniel P. Moronta");
             modelo.put("titulo", "Producto en el carrito");
+            modelo.put("valor", alerta);
             ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
             String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
             modelo.put("cantCarrito", a);
@@ -107,6 +109,11 @@ public class ControladorCarrito extends ControladorBase {
         app.post("/agregarCliente", ctx -> {
             String nombreCliente = ctx.formParam("nombre");
             System.out.print("\n Realizando compra*************\n");
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario","Daniel Peña");
+            List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
+            modelo.put("titulo", "Listado de producto");
+            //modelo.put("lista", auxProducto);
             try {
                 if( ((CarroCompra) ctx.sessionAttribute("carrito")).getCont()>0) {
                     System.out.print("\nSe ha registrado la compra");
@@ -121,17 +128,21 @@ public class ControladorCarrito extends ControladorBase {
                         System.out.println("ID-PRODUCTO : "+a.getProducto().getId());
                         System.out.println("\n");
                     }
-                    System.out.print("\n Cantidad de items agregado: "+ aux.size());
+                   // System.out.print("\n Cantidad de items agregado: "+ aux.size());
 
                     Date fecha = new Date();
                     VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, aux);
                     Controladora.getInstance().agregarVenta(auxVenta);
 
                     ((CarroCompra) ctx.sessionAttribute("carrito")).limpiarCarrito();
+
+
                     ctx.redirect("/carrito");
-                    System.out.print("\n Cantidad de items agregado: "+ aux.size());
+                    alerta = 0;
+                   // System.out.print("\n Cantidad de items agregado: "+ aux.size());
                 }else{
                     ctx.redirect("/carrito");
+                    alerta = 1;
                     System.out.print("\n Debe agregar item para realizar compra");
                 }
 
