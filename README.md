@@ -1,2 +1,2 @@
-# CarritoDeCompra-HTTP-JDBC 
-Carro de Compra con JDBC implementando base de datos Embebida en H2. 
+# CarritoDeCompra-ORM
+Carro de Compra con ORM
