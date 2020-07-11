@@ -15,9 +15,10 @@ dependencies {
     compile "io.javalin:javalin:3.8.0"
     compile "org.slf4j:slf4j-simple:1.7.28"
     compile "org.thymeleaf:thymeleaf:3.0.9.RELEASE" //Thymeleaf
-    compile 'com.h2database:h2:1.4.191' //agregando dependencia de H2, represanta el Drive
-    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.3' //agrenaado liberia para encriptar
-
-
+    compile 'com.h2database:h2:1.4.200' //agregando dependencia de H2, represanta el Drive de la conexion.
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.3' //agregando liberia para encriptar.
+    //ORM - Hibernate.
+    compile 'org.hibernate:hibernate-core:5.4.17.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.4.17.Final'
 
 }
