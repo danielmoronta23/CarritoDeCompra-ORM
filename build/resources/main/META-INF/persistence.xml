@@ -9,7 +9,8 @@
         <class>carrito.encapsulacion.Usuario</class>
         <class>carrito.encapsulacion.Producto</class>
         <class>carrito.encapsulacion.VentasProductos</class>
-        <class>carrito.encapsulacion.ProductoCarrito</class>
+        <class>carrito.encapsulacion.ProductoVenta</class>
+        <class>carrito.encapsulacion.ProductoComprado</class>
          <!-- <class>edu.pucmm.eict.ormjpa.entidades.Foto</class> -->
         <properties>
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test" />-->

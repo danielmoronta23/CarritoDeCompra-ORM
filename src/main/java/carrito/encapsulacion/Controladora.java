@@ -124,18 +124,7 @@ public class Controladora {
     }
 
     public void agregarVenta(VentasProductos auxVenta) {
-        System.out.println("\n Intentanado agregar Venta");
-        boolean a = false;
-        System.out.println("El valor de a es: "+a);
-        VentasProductos ax = new VentasProductos();
-        ax = auxVenta;
-        a = servicioVenta.crear(ax);
-        System.out.println("El valor de a luego es: "+a);
-        if(a==true){
-            System.out.println("Se realizo con existo");
-        }else{
-            System.err.println("No se pudo realizar\n");
-        }
+        servicioVenta.crear(auxVenta);
     }
 
     public List<VentasProductos> getMisVentasProducto() {
@@ -144,7 +133,7 @@ public class Controladora {
 
     public boolean borrarProducto(String id) {
         Producto aux = servicioProducto.buscar(id);
-        return servicioProducto.eliminar(aux);
+        return servicioProducto.eliminar(aux.getId());
     }
 
     public boolean actulizarProducto(String id, String name, BigDecimal precio) {

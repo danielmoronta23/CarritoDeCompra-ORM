@@ -63,9 +63,9 @@
 
             <tr th:each=" p : ${VentasProductos.listaProducto}"  >
                 <!--Sirve para darle una mejor vista-->
-                <td th:text="${p.producto.nombre}"></td>
+                <td th:text="${p.productoVenta.nombre}"></td>
 
-                <td th:text="${p.producto.precio}"></td>
+                <td th:text="${p.productoVenta.precio}"></td>
                 <td th:text="${p.cantProducto}"></td>
                 <td th:text="${p.cant_Total}"></td>
             </tr>

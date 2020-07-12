@@ -36,14 +36,11 @@ public class ControladorCarrito extends ControladorBase {
             modelo.put("usuario", "Daniel P. Moronta");
             modelo.put("titulo", "Producto en el carrito");
             modelo.put("valor", alerta);
-            ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
+            ArrayList<IteamVenta> aux = (ArrayList<IteamVenta>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
             String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
             modelo.put("cantCarrito", a);
             modelo.put("lista", aux);
             modelo.put("total", (((CarroCompra) ctx.sessionAttribute("carrito")).calcularTotal()));
-            //  modelo.put("Lista")
-            //que mas ??
-            //enviando al sistema de plantilla.
             ctx.render("/publico/vistaCarro/vista.html", modelo);
 
         });
@@ -57,11 +54,6 @@ public class ControladorCarrito extends ControladorBase {
             List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
             modelo.put("titulo", "Listado de producto");
             modelo.put("lista", auxProducto);
-            //que mas ??
-            //enviando al sistema de plantilla.
-            /**
-             * Como hacer que si el usuario no se ha identificado que no entre en esta parte?
-             */
             ctx.render("/publico/Admin/inicio.html",modelo);
 
         });
@@ -76,31 +68,21 @@ public class ControladorCarrito extends ControladorBase {
             /**
              * Escribir aqui lo que se va agregar al carrito;
              */
-            //   System.out.print("Entrado para annadir al carrito\n");
             String idProducto = ctx.formParam("x");
             String cantProducto = ctx.formParam("cant");
             Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
             if(producto!=null){
-
                 int cantidad = Integer.parseInt(cantProducto);
-                ((CarroCompra) ctx.sessionAttribute("carrito")).agregarProducto(producto,
-                        cantidad);
-                //   carro.agregarProducto(producto,cantidad);
-                System.out.print("\n Agregando correctamente");
+                ((CarroCompra) ctx.sessionAttribute("carrito")).agregarProducto(producto, cantidad);
             }
-            System.out.print("\nCantidad: "+ctx.formParam("cant")); //CANTIDAD PARA AGREGAR AL CARRITO
-            System.out.print("\nID: "+ctx.formParam("x")); //ID PARA AGREGAR AL CARRITO
-            ctx.redirect("/");//rendrijiendo a pagina principal y pasando render
+
+            ctx.redirect("/");//redirigiendo a pagina principal y pasando render
         });
 
         app.post("/borrarProducroCarrio", ctx -> {
-            System.out.print("\nEntrando por metodo POST para borrar producto del carrito");
             String id = ctx.formParam("idBorrar") ;
-            System.out.print("\nID PRODUCTO A BORRAR DE CARRITO: "+id);
             ((CarroCompra) ctx.sessionAttribute("carrito")).eliminarProducto(id);
-            System.out.print("\nTamano="+((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto().size());
             ctx.redirect("/carrito");
-            // carro.bor
         });
 
         /**
@@ -110,42 +92,23 @@ public class ControladorCarrito extends ControladorBase {
             String nombreCliente = ctx.formParam("nombre");
             System.out.print("\n Realizando compra*************\n");
             Map<String, Object> modelo = new HashMap<>();
-            modelo.put("usuario","Daniel Peña");
+            modelo.put("usuario","DANIEL P. MORONTA");
             List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
             modelo.put("titulo", "Listado de producto");
-            //modelo.put("lista", auxProducto);
             try {
                 if( ((CarroCompra) ctx.sessionAttribute("carrito")).getCont()>0) {
-                    System.out.print("\nSe ha registrado la compra");
-                    System.out.print("\n Haciendo compra...");
-                    System.out.print("\n Cantidad de items agregado: "+((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto().size());
-                    ArrayList<ProductoCarrito> aux = (ArrayList<ProductoCarrito>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
-                    for (ProductoCarrito a:aux)
-                    {
-                        System.out.println("\n");
-                        System.out.println("ID-PRODUCTO AGREGADO: "+a.getIdProductoCarrito());
-                        System.out.println("\n");
-                        System.out.println("ID-PRODUCTO : "+a.getProducto().getId());
-                        System.out.println("\n");
-                    }
-                   // System.out.print("\n Cantidad de items agregado: "+ aux.size());
+                    ArrayList<IteamVenta> aux = (ArrayList<IteamVenta>) (((CarroCompra) ctx.sessionAttribute("carrito")).getListaProducto());
 
                     Date fecha = new Date();
                     VentasProductos auxVenta = new VentasProductos(fecha, nombreCliente, aux);
                     Controladora.getInstance().agregarVenta(auxVenta);
-
                     ((CarroCompra) ctx.sessionAttribute("carrito")).limpiarCarrito();
-
-
                     ctx.redirect("/carrito");
                     alerta = 0;
-                   // System.out.print("\n Cantidad de items agregado: "+ aux.size());
                 }else{
                     ctx.redirect("/carrito");
                     alerta = 1;
-                    System.out.print("\n Debe agregar item para realizar compra");
                 }
-
             }catch (Exception e){
 
             }

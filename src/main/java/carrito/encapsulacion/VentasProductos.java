@@ -12,19 +12,17 @@ public class VentasProductos implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    private static int cont = 0;
+
     @Column(name = "fecha_Compra")
     private Date fechaCompra;
     @Column(name = "nombre_Cliente")
     private String nombreCliente;
 
-    //@ElementCollection(fetch = FetchType.EAGER)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<ProductoCarrito> listaProducto;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<IteamVenta> listaProducto;
 
-    public VentasProductos(Date fechaCompra, String nombreCliente, List<ProductoCarrito> listaProducto) {
-        cont++;
-        this.id ="V:"+cont;
+    public VentasProductos(Date fechaCompra, String nombreCliente, List<IteamVenta> listaProducto) {
+
         this.fechaCompra = fechaCompra;
         this.nombreCliente = nombreCliente;
         this.listaProducto = listaProducto;
@@ -58,12 +56,11 @@ public class VentasProductos implements Serializable {
         this.nombreCliente = nombreCliente;
     }
 
-    public List<ProductoCarrito> getListaProducto() {
+    public List<IteamVenta> getListaProducto() {
         return listaProducto;
     }
 
-    public void setListaProducto(List<ProductoCarrito> listaProducto) {
+    public void setListaProducto(List<IteamVenta> listaProducto) {
         this.listaProducto = listaProducto;
-
     }
 }

@@ -143,15 +143,11 @@ public class ZonaAdmin extends ControladorBase {
             modelo.put("usuario", "Daniel P. Moronta");
             modelo.put("titulo", "Producto en el carrito");
             try {
-                List<VentasProductos> aux = new ArrayList<>();
-                aux  =  Controladora.getControladora().getMisVentasProducto();
-                modelo.put("lista", aux);
-                System.out.print("/SIZE: "+aux.size());
+                modelo.put("lista",  Controladora.getControladora().getMisVentasProducto());
             }catch (Exception e){
                 System.out.print(e);
             }
             ctx.render("/publico/Admin/ventas.html", modelo);
-
         });
         app.before("/zonaAdmin/lista-Venta", ctx -> {
             Usuario usuario = ctx.sessionAttribute("usuario");
@@ -168,7 +164,7 @@ public class ZonaAdmin extends ControladorBase {
         });
         app.post("/Menu", ctx -> {
             Map<String, Object> modelo = new HashMap<>();
-            modelo.put("usuario","Daniel Peña");
+            modelo.put("usuario","DANIEL P. MORONTA");
             //Agregar producto
             System.out.print(ctx.formParam("addNombre"));
             try {
@@ -176,8 +172,6 @@ public class ZonaAdmin extends ControladorBase {
                 String p = "0.00";
                 p =  ctx.formParam("addPrecio");
                 BigDecimal precio= new BigDecimal(p);
-                // System.out.println("EL PRECIO ES: "+precio);
-                //Producto miProducto = new Producto("ID-01",name, precio);
                 Controladora.getInstance().crearProducto(name,precio);
             }catch (Exception e){
                 System.err.println("\nNo se pudo guardar el producto");
@@ -186,13 +180,11 @@ public class ZonaAdmin extends ControladorBase {
 
         });
         app.post("/borrar", ctx -> {
-            System.out.print("Entrando por metodo POST para borrar producto\n");
             String id = ctx.formParam("idBorrar") ;
+            System.out.println("EL ID DEL PRODUCTO QUE DESEA BORRAR ES> "+id);
             if(Controladora.getInstance().borrarProducto(id)==true){
-                System.out.print("Producto Borrado con existo\n");
                 ctx.redirect("/zonaAdmin");
             }else{
-                System.out.print("El Producto No se Pudo Borrar\n");
             }
 
         });
@@ -209,7 +201,6 @@ public class ZonaAdmin extends ControladorBase {
             System.out.println("\nID="+id+"PRECIO: "+p+"\n"+"Nombre="+name);
             System.out.print(Controladora.getInstance().actulizarProducto(id,name,precio));
             if(true==Controladora.getInstance().actulizarProducto(id,name,precio)){
-                System.out.print("Actualizado");
             }
             List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
             modelo.put("titulo", "Listado de producto");
@@ -217,13 +208,5 @@ public class ZonaAdmin extends ControladorBase {
             ctx.render("/publico/Admin/inicio.html",modelo);
 
         });
-
-
-
-
     }
-
-
-
-
 }

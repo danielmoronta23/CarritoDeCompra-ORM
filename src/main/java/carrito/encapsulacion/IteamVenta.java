@@ -6,35 +6,29 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Embeddable // Anotamos para indicar que es una clase que se puede incrustar.
-public class ProductoCarrito implements Serializable {
-
+public class IteamVenta implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Transient
     private String idIteam;
-    @OneToOne //creando realacion con la tabla producto
-    private Producto producto;
+    @Embedded
+    private ProductoComprado productoVenta;
     @Column(name = "Cantidad")
     private int cantProducto=0;
-
-    /**
-     @Id
-     private String IdProductoCarrito;
-     **/
+    @Transient
+    private static int cant = 0;
 
     private BigDecimal cant_Total;
 
-    public ProductoCarrito(Producto producto, int cantProducto) {
-
-
+    public IteamVenta(ProductoComprado producto, int cantProducto) {
+        cant+=1;
+        this.setIdIteam(""+cant);
         this.cantProducto = cantProducto;
-        this.producto = producto;
+        this.productoVenta = producto;
         calcularTotal();
     }
 
-    public ProductoCarrito() {
-        calcularTotal();
+    public IteamVenta() {
     }
 
     public BigDecimal getCant_Total() {
@@ -57,12 +51,12 @@ public class ProductoCarrito implements Serializable {
         return cantProducto;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public ProductoComprado getProductoVenta() {
+        return productoVenta;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProductoVenta(ProductoComprado producto) {
+        this.productoVenta = producto;
     }
 
     public void setCantProducto(int cantProducto) {
@@ -72,10 +66,8 @@ public class ProductoCarrito implements Serializable {
     public BigDecimal calcularTotal() {
         BigDecimal total = new BigDecimal("0.00");
         if(cantProducto>0){
-            total = BigDecimal.valueOf(this.cantProducto * this.producto.getPrecio().doubleValue());
-
+            total = BigDecimal.valueOf(this.cantProducto * this.productoVenta.getPrecio().doubleValue());
         }
-
         setCant_Total(total);
         return total.setScale(2, RoundingMode.CEILING);
     }

@@ -75,9 +75,9 @@
                 <tbody>
                     <tr  th:each="ProductoCarrito : ${lista}">
 						<!--Sirve para darle una mejor vista-->
-						<td th:text="${ProductoCarrito.IdProductoCarrito}">
-						<td th:text="${ProductoCarrito.Producto.nombre}"></td>
-						<td th:text="${ProductoCarrito.Producto.precio}"></td>
+						<td th:text="${ProductoCarrito.idIteam}">
+						<td th:text="${ProductoCarrito.productoVenta.nombre}"></td>
+						<td th:text="${ProductoCarrito.productoVenta.precio}"></td>
 						<td th:text="${ProductoCarrito.cantProducto}"></td>
 						</td>
                         <td th:text="${ProductoCarrito.cant_Total}"></td>
