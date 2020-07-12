@@ -1,20 +1,15 @@
 package carrito.controladores;
 
+import carrito.encapsulacion.*;
 import io.javalin.Javalin;
 
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import carrito.encapsulacion.Controladora;
-import carrito.encapsulacion.Producto;
-import carrito.encapsulacion.Usuario;
-import carrito.encapsulacion.VentasProductos;
 import carrito.util.ControladorBase;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -39,7 +34,6 @@ public class ZonaAdmin extends ControladorBase {
                     System.out.println("Entrando a before");
                     Usuario usuario = ctx.sessionAttribute("usuario");
                     //tratandodo de hacer con la cookie
-
                     if(usuario==null){
                         /**
                          * No existe, tiene que iniciar session
@@ -59,8 +53,6 @@ public class ZonaAdmin extends ControladorBase {
                         System.out.println("Verificando si es null");
                         ctx.redirect("/iniciarSession");
 
-                    }else{
-                        //System.out.println("Verificando si campeon");
                     }
                 });
                 get(ctx -> {
@@ -72,8 +64,6 @@ public class ZonaAdmin extends ControladorBase {
                     ctx.render("/publico/Admin/inicio.html",modelo);
 
                 });
-
-
             });
 
         });
@@ -152,39 +142,43 @@ public class ZonaAdmin extends ControladorBase {
         app.before("/zonaAdmin/lista-Venta", ctx -> {
             Usuario usuario = ctx.sessionAttribute("usuario");
             if(usuario==null){
-                /**
-                 * No existe, tiene que iniciar session
-                 */
-
+                //No existe, tiene que iniciar session
                 ctx.redirect("/iniciarSession");
-            }else{
-
             }
-
         });
         app.post("/Menu", ctx -> {
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("usuario","DANIEL P. MORONTA");
             //Agregar producto
             System.out.print(ctx.formParam("addNombre"));
-            try {
-                String name = ctx.formParam("addNombre");//permite obtener lo que se ingre  en parrametro <nomnbre>
-                String p = "0.00";
-                p =  ctx.formParam("addPrecio");
-                BigDecimal precio= new BigDecimal(p);
-                Controladora.getInstance().crearProducto(name,precio);
-            }catch (Exception e){
-                System.err.println("\nNo se pudo guardar el producto");
+            String name = ctx.formParam("addNombre");//permite obtener lo que se ingrease  en parrametro <nomnbre>
+            String descripcion = ctx.formParam("addDescripcion");
+            String p = "0.00";
+            p =  ctx.formParam("addPrecio");
+            BigDecimal precio= new BigDecimal(p);
+            List<Foto> misFotos = new ArrayList<>();
+
+            ctx.uploadedFiles("foto").forEach(uploadedFile -> {
+                System.out.println("\n ENTRANDO A METODO PARA CARGAR IMAGENES.... \n");
+                try {
+                    byte[] bytes = uploadedFile.getContent().readAllBytes();
+                    String encodedString = Base64.getEncoder().encodeToString(bytes);
+                    Foto foto = new Foto(uploadedFile.getFilename(), uploadedFile.getContentType(), encodedString);
+                    misFotos.add(foto);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            if(misFotos.size()>0){
+                Controladora.getInstance().crearProducto(name, precio, descripcion, misFotos);
             }
             ctx.redirect("/zonaAdmin");
-
         });
         app.post("/borrar", ctx -> {
             String id = ctx.formParam("idBorrar") ;
-            System.out.println("EL ID DEL PRODUCTO QUE DESEA BORRAR ES> "+id);
             if(Controladora.getInstance().borrarProducto(id)==true){
                 ctx.redirect("/zonaAdmin");
-            }else{
             }
 
         });

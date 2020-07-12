@@ -62,8 +62,8 @@ public class Controladora {
     }
 
     //GRUD PRODUCTO
-    public void crearProducto(String name, BigDecimal precio){
-        servicioProducto.crear(new Producto(name,precio));
+    public void crearProducto(String name, BigDecimal precio, String descripcion, List<Foto> fotoList){
+        servicioProducto.crear(new Producto(name,precio, descripcion, fotoList));
     }
     /**
     public boolean borrarProducto(String ID){

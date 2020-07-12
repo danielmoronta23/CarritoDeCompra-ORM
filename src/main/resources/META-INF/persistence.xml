@@ -9,7 +9,7 @@
         <class>carrito.encapsulacion.Usuario</class>
         <class>carrito.encapsulacion.Producto</class>
         <class>carrito.encapsulacion.VentasProductos</class>
-        <class>carrito.encapsulacion.ProductoVenta</class>
+        <class>carrito.encapsulacion.Comentario</class>
         <class>carrito.encapsulacion.ProductoComprado</class>
          <!-- <class>edu.pucmm.eict.ormjpa.entidades.Foto</class> -->
         <properties>
@@ -23,7 +23,7 @@
             <property name="hibernate.show_sql" value="true"/>
             <!-- Indica como será la generación de las tablas en el motor-->
             <!-- ver la documentación: https://docs.oracle.com/javaee/7/tutorial/persistence-intro005.htm -->
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create-drop"/>
         </properties>
     </persistence-unit>
 

@@ -4,9 +4,11 @@ package carrito.encapsulacion;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Entity //para indicar que la entidad será maneja por el provedor de persistencia
+@Embeddable
 @Table(name = "Producto")
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -18,15 +20,19 @@ public class Producto implements Serializable {
     private String nombre;
     @Column(name = "precio")
     private BigDecimal precio;
+    @ElementCollection
+    List<Foto> fotoList;
+    @Column(name = "Descripcion")
+    private String descripcion;
 
-
-    //Constructor por defecto
     public Producto() {
     }
 
-    public Producto(String nombre, BigDecimal precio) {
+    public Producto(String nombre, BigDecimal precio, String descripcion, List<Foto> fotoList) {
         this.nombre = nombre;
         this.precio = precio;
+        this.descripcion = descripcion;
+        this.fotoList = fotoList;
     }
 
     public String getId() {
@@ -53,4 +59,19 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
+    public List<Foto> getFotoList() {
+        return fotoList;
+    }
+
+    public void setFotoList(List<Foto> fotoList) {
+        this.fotoList = fotoList;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
