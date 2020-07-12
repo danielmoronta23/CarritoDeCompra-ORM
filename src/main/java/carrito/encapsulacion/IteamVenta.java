@@ -5,14 +5,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@Entity // Anotamos para indicar que es una clase que se puede incrustar.
+@Embeddable // Anotamos para indicar que es una clase que se puede incrustar.
 public class ProductoCarrito implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String IdProductoCarrito;
-    @OneToOne(cascade = CascadeType.ALL) //creando realacion con la tabla producto
+    private String idIteam;
+    @OneToOne //creando realacion con la tabla producto
     private Producto producto;
     @Column(name = "Cantidad")
     private int cantProducto=0;
@@ -21,21 +22,12 @@ public class ProductoCarrito implements Serializable {
      @Id
      private String IdProductoCarrito;
      **/
+
     private BigDecimal cant_Total;
-    private static int cant = 0;
-
-
-    public BigDecimal getCant_Total() {
-        return cant_Total;
-    }
-
-    public void setCant_Total(BigDecimal cant_Total) {
-        this.cant_Total = cant_Total;
-    }
 
     public ProductoCarrito(Producto producto, int cantProducto) {
-        cant+=1;
-        this.setIdProductoCarrito("PC:"+cant);
+
+
         this.cantProducto = cantProducto;
         this.producto = producto;
         calcularTotal();
@@ -45,12 +37,20 @@ public class ProductoCarrito implements Serializable {
         calcularTotal();
     }
 
-    public String getIdProductoCarrito() {
-        return IdProductoCarrito;
+    public BigDecimal getCant_Total() {
+        return cant_Total;
     }
 
-    public void setIdProductoCarrito(String idProductoCarrito) {
-        IdProductoCarrito = idProductoCarrito;
+    public void setCant_Total(BigDecimal cant_Total) {
+        this.cant_Total = cant_Total;
+    }
+
+    public String getIdIteam() {
+        return idIteam;
+    }
+
+    public void setIdIteam(String idIteam) {
+        this.idIteam = idIteam;
     }
 
     public int getCantProducto() {
