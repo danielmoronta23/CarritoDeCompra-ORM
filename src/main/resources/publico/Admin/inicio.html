@@ -420,7 +420,7 @@
 				</div>
 				<div class="col-sm-6">
 					<!-- ADD Modal HTML --> <!--Ventana para agregar un producuto-->
-					<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
+					<a href="#addProducto" class="btn btn-success" data-toggle="modal">
 						<i class="material-icons">&#xE147;</i>
 						<span>Agregar nuevo producto</span></a>
 				</div>
@@ -432,7 +432,10 @@
 			<tr>
 				<th>
 				</th>
+				<th>#
+				</th>
 				<th>Producto</th>
+				<th>Descripcion</th>
 				<th>Precio (RD$) </th>
 				<th>Acción</th>
 
@@ -441,9 +444,16 @@
 			<tbody>
 			<tr  th:each="Producto : ${lista}">
 				<!--Sirve para darle una mejor vista-->
-				<td th:text="${Producto.id}"></td>
-				<td th:text="${Producto.nombre}">
+				<td  th:each="foto, cont : ${Producto.fotoList}">
+					<div th:class="${cont.first} ? 'carousel-item active' : 'carousel-item'">
+						<img th:src="@{'data:' + ${foto.mimeType} + '; base64,' + ${foto.fotoBase64}}" width="100" height="100">
+					</div>
+
+
 				</td>
+				<td th:text="${Producto.id}"></td>
+				<td th:text="${Producto.nombre}"></td>
+				<td th:text="${Producto.descripcion}"></td>
 				<td th:text="${Producto.precio}"></td>
 				<td>
 					<!--Trantando de enviar parrametros a plantilla of editar-->
@@ -460,7 +470,7 @@
 	</div>
 </div>
 <!-- ADD Modal HTML --> <!--Venta para agregar un producuto-->
-<div id="addEmployeeModal" class="modal fade">
+<div id="addProducto" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form id="addProduct" name="addProduct" method="post" action="/Menu" enctype="multipart/form-data">

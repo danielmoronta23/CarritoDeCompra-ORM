@@ -9,7 +9,7 @@ $(document).ready(function($){
 		console.log("Entrando a funcion ok");
 		//	console.log("Entrando a funcion");
 		var curRow = $(this).closest('tr');
-		var col0 = curRow.find('td:eq(0)').text();
+		var col0 = curRow.find('td:eq(1)').text();
 		//var col3 = curRow.find('input[type="number"]').val();
 		/**
 		 * Acciendiendo al DOM para pasar el ID de annadir al carrito

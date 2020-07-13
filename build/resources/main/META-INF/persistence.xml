@@ -9,7 +9,7 @@
         <class>carrito.encapsulacion.Usuario</class>
         <class>carrito.encapsulacion.Producto</class>
         <class>carrito.encapsulacion.VentasProductos</class>
-        <class>carrito.encapsulacion.ProductoVenta</class>
+        <class>carrito.encapsulacion.Comentario</class>
         <class>carrito.encapsulacion.ProductoComprado</class>
          <!-- <class>edu.pucmm.eict.ormjpa.entidades.Foto</class> -->
         <properties>

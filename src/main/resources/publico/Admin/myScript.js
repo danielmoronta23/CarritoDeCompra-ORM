@@ -14,9 +14,9 @@ $(document).ready(function($){
         //	console.log(contenido.text);
         //	console.log(contenido);
         //   var col1 = curRow.find('td:eq(0)').text();
-        var col0 = curRow.find('td:eq(0)').text();
-        var col1 = curRow.find('td:eq(1)').text();
-        var col2 = curRow.find('td:eq(2)').text();
+        var col0 = curRow.find('td:eq(1)').text();
+        var col1 = curRow.find('td:eq(2)').text();
+        var col2 = curRow.find('td:eq(3)').text();
         //console.log(curRow);
         //console.log(col2, col1);
         array.push(col1)
@@ -48,9 +48,9 @@ $(document).ready(function($){
         //	console.log(contenido.text);
         //	console.log(contenido);
         //   var col1 = curRow.find('td:eq(0)').text();
-        var col0 = curRow.find('td:eq(0)').text();
-        var col1 = curRow.find('td:eq(1)').text();
-        var col2 = curRow.find('td:eq(2)').text();
+        var col0 = curRow.find('td:eq(1)').text();
+        var col1 = curRow.find('td:eq(2)').text();
+        var col2 = curRow.find('td:eq(3)').text();
         //console.log(curRow);
         //console.log(col2, col1);
         //array.push(col1)

@@ -13,18 +13,132 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="../js/principal.js"></script>
 	<link rel="stylesheet" type="text/css" href="../CSS/estilos.css">
+	<style>
+		.text-center {
+			text-align: center!important;
+		}
+		.mb-4, .my-4 {
+			margin-bottom: 1.5rem!important;
+		}
+		.d-inline-block {
+			display: inline-block!important;
+		}
+		.pagination {
+			margin-top: 0;
+			border-radius: 50px;
+			background: #fff;
+			padding: 5px;
+			display: flex;
+		}
+		.carousel {
+			margin: 30px auto 60px;
+			padding: 0 80px;
+		}
+		.carousel .carousel-item {
+			text-align: center;
+			overflow: hidden;
+		}
+		.carousel .item-price {
+			font-size: 13px;
+			padding: 2px 0;
+		}
+		.carousel .item-price strike {
+			opacity: 0.7;
+			margin-right: 5px;
+		}
+		.carousel .carousel-item h4 {
+			font-family: 'Varela Round', sans-serif;
+		}
+		.carousel .carousel-item img {
+			max-width: 100%;
+			display: inline-block;
+		}
+		.carousel .thumb-content .btn {
+			color: #7ac400;
+			font-size: 11px;
+			text-transform: uppercase;
+			font-weight: bold;
+			background: none;
+			border: 1px solid #7ac400;
+			padding: 6px 14px;
+			margin-top: 5px;
+			line-height: 16px;
+			border-radius: 20px;
+		}
+		.carousel .thumb-content .btn:hover, .carousel .thumb-content .btn:focus {
+			color: #fff;
+			background: #7ac400;
+			box-shadow: none;
+		}
+		.carousel .thumb-content .btn i {
+			font-size: 14px;
+			font-weight: bold;
+			margin-left: 5px;
+		}
+		.carousel .thumb-wrapper {
+			margin: 5px;
+			text-align: left;
+			background: #fff;
+			box-shadow: 0px 2px 2px rgba(0,0,0,0.1);
+		}
+		.carousel .thumb-content {
+			padding: 15px;
+			font-size: 13px;
+		}
+		.carousel-control-prev, .carousel-control-next {
+			height: 44px;
+			width: 44px;
+			background: none;
+			margin: auto 0;
+			border-radius: 50%;
+			border: 3px solid rgba(0, 0, 0, 0.8);
+		}
+		.carousel-control-prev i, .carousel-control-next i {
+			font-size: 36px;
+			position: absolute;
+			top: 50%;
+			display: inline-block;
+			margin: -19px 0 0 0;
+			z-index: 5;
+			left: 0;
+			right: 0;
+			color: rgba(0, 0, 0, 0.8);
+			text-shadow: none;
+			font-weight: bold;
+		}
+		.carousel-control-prev i {
+			margin-left: -3px;
+		}
+		.carousel-control-next i {
+			margin-right: -3px;
+		}
+		.carousel-indicators {
+			bottom: -50px;
+		}
+		.carousel-indicators li, .carousel-indicators li.active {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			margin: 4px;
+			border: none;
+		}
+		.carousel-indicators li {
+			background: #ababab;
+		}
+		.carousel-indicators li.active {
+			background: #555;
+		}
+	</style>
 </head>
-<body class="sb-nav-fixed">
-
+<body >
 	<header >
 		<section class="wrapper">
 		<div class="menu_bar">
 			<a href="#" class="bt-menu"><span class="icon-list2"></span>Menú</a>
 		</div>
-
 		<nav >
 			<ul>
-				<li><a href="#"><span class="icon-house"></span>Inicio</a></li>
+				<li><a href="/"><span class="icon-house"></span>Inicio</a></li>
 				<li clase="prueba"><a href="../inisioSesion/index.html"><span class="carrito"></span>Login</a></li>
 				<li >
 					<a href="/carrito">
@@ -37,89 +151,68 @@
 		</nav>
 		</section>
 	</header>
-	<section class="contenido wrapper">
-	
-    <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6">
-						<h2 th:text="${titulo}"></h2>
+	<div class="container">
+			<div class="row">
+				<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<div class="row">
+								<div class="col-sm-4" th:each="Producto : ${lista}">
+									<div class="thumb-wrapper">
+
+										<div class="thumb-content">
+
+											<div class="img-box" th:each="foto, cont : ${Producto.fotoList}">
+												<div th:class="${cont.first} ? 'carousel-item active' : 'carousel-item'">
+													<img th:src="@{'data:' + ${foto.mimeType} + '; base64,' + ${foto.fotoBase64}}" width="280" height="210">
+												</div>
+											</div>
+											<h4  th:text="${Producto.nombre}"></h4>
+											<p th:text="${Producto.descripcion}"></p>
+											<p class="item-price">$ <b th:text="${Producto.precio}"></b>
+												<input  name="cant" type="number" form="fcarro" min="1" max="100" step="1" value="1" />
+											</p>
+											<p>
+											<form method="post" action="/detalles" id="fdetalles" class="fdetalles" name="fdetalles">
+												<input type="hidden" id="Iddetalles" name="Iddetalles" th:value="${Producto.id}" >
+											</form>
+											<form method="post" action="/update" id="fcarro" class="fcarro" name="fcarro">
+												<input type="hidden" id="custId" name="custId" th:value="${Producto.id}" >
+												<button class="btn btn-success"  form="fdetalles">More</button>
+												<button class="btn btn-success" id="ok" form="fcarro">Add to Cart</button>
+											</form>
+											</p>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				
-                </div>
-            </div>
-			<form method="post" action="/update" id="fcarro" class="fcarro" name="fcarro">
-
-				<table class="table table-striped table-hover" id="table">
-					<thead>
-					<tr>
-						<th>ID
-						</th>
-						<th>Producto</th>
-						<th>Precio (RD$) </th>
-						<th>Cantidad</th>
-						<th>Acción</th>
-
-					</tr>
-					</thead>
-					<tbody>
-					<tr  th:each="Producto : ${lista}">
-
-						<!--Sirve para darle una mejor vista-->
-						<td  th:text="${Producto.id}" >
-
-
-						</td>
-						<td th:text="${Producto.nombre}">
-						</td>
-						<td th:text="${Producto.precio}">
-						</td>
-
-						<td >
-							<!-- Buscar otra forma mas eficiente-->
-							<input  name="cant" type="number" form="fcarro" min="1" max="100" step="1" value="1" />
-						</td>
-						<td >
-
-							<button class="btn btn-success" id="ok" form="fcarro">
-
-								Agregar al Carrito
-
-							</button>
-
-						</td>
-					</tr>
-					</tbody>
-				</table>
-				<div>
-					<input type="hidden" form="fcarro" name="x" value="" >
 				</div>
-			</form>
-
-		</div>
-	</div>
-		<div id="editEmployeeModal" >
-
-
-					<!-- Redirecionaldo a la misma pagina y agregando un post-->
-					<form name="f1" id="f1" method="post" action="/update" >
-						<!--<div class="form-group"> -->
-								<input type="hidden" class="form-control" required id="nombre" name="nombre">
-								<input type="hidden" id="id" name="id" value="">
-
-					</form>
-
-
-		</div>
-	<footer class="navbar navbar-fixed-bottom">
-		<div class="container-fluid">
-			<div class="d-flex align-items-center justify-content-between small">
-				<div class="text-muted">Copyright &copy; DANIEL P. MORONTA:2020 </div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="text-center mb-4">
+						<nav class="d-inline-block">
+							<ul class="pagination">
+								<li class="page-item"><a class="page-link" href="pagina?pa=1">«</a>
+								</li><li class="active"><a class="page-link" href="gallery.php?page=1">1</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=2">2</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=3">3</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=4">4</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=5">5</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=6">6</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=7">7</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=8">8</a></li>
+								<li class="page-item"><a class="page-link" href="gallery.php?page=3">»</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
 			</div>
 		</div>
-	</footer>
-</section>
+
 </body>
 <script src="../principal/JS/myscript.js"></script>
 </html>                                		

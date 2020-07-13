@@ -68,7 +68,7 @@ public class ControladorCarrito extends ControladorBase {
             /**
              * Escribir aqui lo que se va agregar al carrito;
              */
-            String idProducto = ctx.formParam("x");
+            String idProducto = ctx.formParam("custId");
             String cantProducto = ctx.formParam("cant");
             Producto producto =  Controladora.getInstance().buscarProducto(idProducto);
             if(producto!=null){
@@ -132,6 +132,14 @@ public class ControladorCarrito extends ControladorBase {
                 carrito = new CarroCompra();
                 ctx.sessionAttribute("carrito", carrito);
             }
+        });
+        app.post("/detalles", ctx -> {
+            /**
+             * Escribir aqui lo que se va agregar al carrito;
+             */
+            String idProducto = ctx.formParam("Iddetalles");
+            //String cantProducto = ctx.formParam("cant");
+            System.out.println("Se quiere ver los detalles de "+idProducto);
         });
 
     }

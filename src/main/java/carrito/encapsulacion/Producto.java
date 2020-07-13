@@ -8,7 +8,6 @@ import java.util.List;
 
 
 @Entity //para indicar que la entidad será maneja por el provedor de persistencia
-@Embeddable
 @Table(name = "Producto")
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,7 +19,7 @@ public class Producto implements Serializable {
     private String nombre;
     @Column(name = "precio")
     private BigDecimal precio;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     List<Foto> fotoList;
     @Column(name = "Descripcion")
     private String descripcion;
