@@ -135,8 +135,17 @@ public class Controladora {
     }
 
     public boolean borrarProducto(String id) {
-        Producto aux = servicioProducto.buscar(id);
-        return servicioProducto.eliminar(aux.getId());
+        Producto auxProducto = servicioProducto.buscar(id);
+        /**
+         * Esta no es la mejor opcion para borrar los comentarios de un producto.
+         */
+        List<Comentario> list = servicioComentario.getComentarios(auxProducto);
+        for (Comentario co : list) {
+            ///System.out.println("BORRANDO COMENTARIO\n");
+            borrarComentario(co.getId());
+
+        }
+        return  servicioProducto.eliminar(auxProducto.getId());
     }
 
     public boolean actulizarProducto(String id, String name, BigDecimal precio) {
@@ -150,7 +159,6 @@ public class Controladora {
         return estado;
     }
 
-
     public boolean agregarComentario(String comentario, Date fecha, String idProducto){
         Producto auxProducto =  servicioProducto.buscar(idProducto);
 
@@ -160,9 +168,7 @@ public class Controladora {
         return false;
     }
     public List<Comentario> getComentarios(String idProducto){
-
         return servicioComentario.getComentarios(servicioProducto.buscar(idProducto));
-
     }
     public boolean borrarComentario(String idComentario){
 
@@ -172,4 +178,11 @@ public class Controladora {
 
         return servicioComentario.buscar(idComentario);
     }
+    public List<Producto> paginacionProducto(int pagina) {
+        return  servicioProducto.paginacionProducto(pagina);
+    }
+    public int cantProducto(){
+        return servicioProducto.cantProducto();
+    }
+
 }

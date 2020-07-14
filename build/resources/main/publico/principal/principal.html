@@ -202,16 +202,12 @@
 					<div class="text-center mb-4">
 						<nav class="d-inline-block">
 							<ul class="pagination">
-								<li class="page-item"><a class="page-link" href="pagina?pa=1">«</a>
-								</li><li class="active"><a class="page-link" href="gallery.php?page=1">1</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=2">2</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=3">3</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=4">4</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=5">5</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=6">6</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=7">7</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=8">8</a></li>
-								<li class="page-item"><a class="page-link" href="gallery.php?page=3">»</a></li>
+
+									<li th:class="${pagina<=cantPagina} ? 'page-item disabled' : 'page-item'" ><a class="page-link" th:href="@{/listaProducto(pagina=${pagina-1})}" >Anterior</a></li>
+									<li th:class="${pagina==indice} ? 'active' : 'page-item'" th:each="indice, stat : ${#numbers.sequence(1, cantPagina, 1)}">
+										<a class="page-link"  th:href="@{/listaProducto(pagina=${indice})}"  th:text="${indice}"></a>
+									</li>
+									<li th:class="${pagina>=cantPagina} ? 'page-item disabled' : 'page-item'" class="page-item"><a class="page-link" th:href="@{/listaProducto(pagina=${pagina+1})}" >Siguiente</a>
 							</ul>
 						</nav>
 					</div>

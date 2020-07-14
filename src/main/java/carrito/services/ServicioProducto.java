@@ -20,5 +20,21 @@ public class ServicioProducto extends ManejadorBD<Producto> {
     public ServicioProducto() {
         super(Producto.class);
     }
+    //Funcion para hacer la paginacion de la lista de producto, solo se muestran 10 por cada pagina
+    public List<Producto> paginacionProducto(int pagina){
+        int pageSize = 10;
+        EntityManager entityManager = getEntityManager();
+        Query query = entityManager.createNativeQuery("SELECT * FROM Producto", Producto.class);
+        query.setFirstResult((pagina - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
+    public int cantProducto(){
+        EntityManager entityManager = getEntityManager();
+        String countQ = "SELECT COUNT(P.id) FROM Producto P";
+        Query countQuery = entityManager.createQuery(countQ);//consulta JQPL
+        return ((Number) countQuery.getSingleResult()).intValue();
+    }
+
 
 }

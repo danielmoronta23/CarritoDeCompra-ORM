@@ -24,7 +24,6 @@ public class Producto implements Serializable {
     List<Foto> fotoList;
     @Column(name = "Descripcion")
     private String descripcion;
-
     public Producto() {
     }
 

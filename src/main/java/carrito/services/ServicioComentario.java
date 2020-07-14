@@ -22,25 +22,19 @@ public class ServicioComentario extends ManejadorBD<Comentario>{
         Query query = em.createNativeQuery("select * from Comentario  WHERE Comentario.PRODUCTO_ID LIKE :id", Comentario.class);
         query.setParameter("id", id);
         List<Comentario> lista = query.getResultList();
-        //ARREGLAR QUERY
-        /**
-        Query comentario = entityManager.createQuery("SELECT Comentario FROM Comentario WHERE Id_Comentario = :id");
-        comentario.setParameter("id", id+"%");
-        Query fecha = entityManager.createQuery("SELECT Fecha FROM Comentario WHERE Id_Comentario = :id");
-        fecha.setParameter("id", id+"%");
-        List<String> comentarios = comentario.getResultList();
-        List<String> fechas = fecha.getResultList();
-         **/
-        /**
-        for (int i = 0; i < comentarios.size(); i++) {
-            try {
-                comentarioList.add(new Comentario(producto, comentarios.get(i), new SimpleDateFormat("dd/MM/yyyy").parse(fechas.get(i))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-         **/
         return lista;
     }
+    /**
+    public void eliminarComentarios(Producto producto){
+        System.out.println("BORRANDO LOS COMENTARIOS DEL PRODUCTO\n\n\n");
+        String id = producto.getId();
+        EntityManager entityManager = getEntityManager();
+        //entityManager.persist(producto);
+        entityManager.createNativeQuery("DELETE from Comentario  WHERE Comentario.PRODUCTO_ID LIKE :id")
+                .setParameter("id", producto.getId());
+                //.executeUpdate();
+        //assertThat(entityManager.find(Foo.class, foo.getId()), nullValue());
 
+    }
+    **/
 }

@@ -14,22 +14,41 @@ public class ControladorCarrito extends ControladorBase {
         super(app);
     }
     private static int alerta = -1;
+    private static int numeroPagina=1;
+    private static int paginacion=1;
     @Override
     public void aplicarRutas() {
         app.routes(() -> {
             path("/", () ->{ //Reune un grupo de Endpoint para que funcionen en un mismo path o ruta
                 app.get("/", ctx -> {
-                    alerta = -1;
-                    Map<String, Object> modelo = new HashMap<>();
-                    List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
-                    modelo.put("titulo", "Lista de producto disponible:");
-                    modelo.put("lista", auxProducto);
-                    String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
-                    modelo.put("cantCarrito", a);
-                    ctx.render("/publico/principal/principal.html",modelo);
+                    ctx.redirect("/listaProducto");
+
                 });
             });
+
         });
+        app.get("//listaProducto", ctx -> {
+            if(ctx.queryParam("pagina")==null){
+                paginacion = 1;
+
+            }else{
+                numeroPagina = Integer.parseInt(ctx.queryParam("pagina"));
+                paginacion = numeroPagina==0?1:numeroPagina;
+            }
+            alerta = -1;
+            Map<String, Object> modelo = new HashMap<>();
+            List<Producto> auxProducto = Controladora.getInstance().paginacionProducto(paginacion);
+            modelo.put("titulo", "Lista de producto disponible:");
+            modelo.put("lista", auxProducto);
+            modelo.put("pagina", paginacion);
+
+            int cantProducto = (int) Math.ceil((double) Controladora.getControladora().cantProducto()/10);
+            modelo.put("cantPagina",cantProducto);
+
+            String a = "("+   (((CarroCompra) ctx.sessionAttribute("carrito")).getCont()) +")";
+            modelo.put("cantCarrito", a);
+            ctx.render("/publico/principal/principal.html",modelo);
+            });
 
         app.get("/carrito", ctx -> {
             Map<String, Object> modelo = new HashMap<>();
@@ -60,7 +79,7 @@ public class ControladorCarrito extends ControladorBase {
 
         /**
          * Annadir al carrito
-         * Laa ruta update no tiene que ver nada con actualizar, solo que se la puse como referencia
+         * La ruta update no tiene que ver nada con actualizar, solo que se la puse como referencia
          * a un archivo html, y para no cambiarlo lo deje igual. Aunque pronto pienseo cambiarlo.
          * Mas aun, esa ruta solo sirve para agregar al carrito.
          */
@@ -75,8 +94,7 @@ public class ControladorCarrito extends ControladorBase {
                 int cantidad = Integer.parseInt(cantProducto);
                 ((CarroCompra) ctx.sessionAttribute("carrito")).agregarProducto(producto, cantidad);
             }
-
-            ctx.redirect("/");//redirigiendo a pagina principal y pasando render
+            ctx.redirect("/listaProducto"+"?pagina="+ numeroPagina);
         });
 
         app.post("/borrarProducroCarrio", ctx -> {
@@ -176,7 +194,7 @@ public class ControladorCarrito extends ControladorBase {
         app.get("/eliminarComentario",ctx -> {
             String idComentario = ctx.queryParam("Id");
             String idProducto = Controladora.getInstance().buscarCOmentario(idComentario).getProducto().getId();
-            //boolean a = Controladora.getInstance().borrarComentario(idComentario);
+            boolean a = Controladora.getInstance().borrarComentario(idComentario);
            ctx.redirect("view"+"?Id="+idProducto);
         });
 
