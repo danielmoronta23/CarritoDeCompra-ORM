@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group 'edu.pucmm.ceit.p2'
@@ -11,6 +12,7 @@ repositories {
 }
 
 dependencies {
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile "io.javalin:javalin:3.8.0"
     compile "org.slf4j:slf4j-simple:1.7.28"
@@ -27,4 +29,19 @@ compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+shadowJar{
+    baseName = 'app'
+    classifier = ''
+    archiveVersion = ''
+}
+
+/**
+ * tarea necesaria para heroku si optamos por la tarea de Shadowjar
+ * en el archivo Procfile debe estar el siguiente comando:
+ * web: java -jar build/libs/app.jar
+ */
+task stage {
+    dependsOn shadowJar
 }
