@@ -22,3 +22,9 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.4.17.Final'
 
 }
+//Agregando UTF 8 para las plantillas
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
