@@ -133,13 +133,51 @@ public class ControladorCarrito extends ControladorBase {
                 ctx.sessionAttribute("carrito", carrito);
             }
         });
-        app.post("/detalles", ctx -> {
-            /**
-             * Escribir aqui lo que se va agregar al carrito;
-             */
-            String idProducto = ctx.formParam("Iddetalles");
-            //String cantProducto = ctx.formParam("cant");
+        app.get("/agregarcomentario", ctx -> {
+            String idProducto = ctx.queryParam("Id");
+
+            System.out.println("El tipo de datos recibido: "+ctx.header("Comtemt")+ "Matricula:"+ctx.queryParam("Id"));
+
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario", "Daniel P. Moronta");
+            modelo.put("titulo", "Producto en el carrito");
             System.out.println("Se quiere ver los detalles de "+idProducto);
+
+            Producto aux = null;
+            aux = Controladora.getControladora().buscarProducto(idProducto);
+            if(aux!=null){
+                List<Foto> a= aux.getFotoList();
+                modelo.put("id", idProducto);
+                modelo.put("fotoList", a);
+                System.out.println("LA CANTIDAD DE IAMGENES ES: "+a.size());
+                List<Comentario> lista = Controladora.getInstance().getComentarios(idProducto);
+                modelo.put("listaComentario", lista);
+                ctx.render("/publico/principal/comentarioVistaPrincipal.html", modelo);
+            }else{
+                ctx.result("Error al buscar la info solicitada");
+            }
+        });
+        app.post("/agregarComentario",ctx->{
+            String id = ctx.formParam("id");
+            Producto aux = null;
+            aux = Controladora.getControladora().buscarProducto(id);
+            Map<String, Object> modelo = new HashMap<>();
+            Date fecha = new Date();
+            String comentario = ctx.formParam("inputMessage");
+            Controladora.getInstance().agregarComentario(comentario,fecha,id);
+            List<Comentario> lista = Controladora.getInstance().getComentarios(id);
+            List<Foto> a= aux.getFotoList();
+            modelo.put("id", id);
+            modelo.put("fotoList", a);
+            modelo.put("listaComentario", lista);
+            ctx.render("/publico/principal/comentarioVistaPrincipal.html", modelo);
+
+        });
+        app.get("/eliminarComentario",ctx -> {
+            String idComentario = ctx.queryParam("Id");
+            String idProducto = Controladora.getInstance().buscarCOmentario(idComentario).getProducto().getId();
+            //boolean a = Controladora.getInstance().borrarComentario(idComentario);
+           ctx.redirect("view"+"?Id="+idProducto);
         });
 
     }

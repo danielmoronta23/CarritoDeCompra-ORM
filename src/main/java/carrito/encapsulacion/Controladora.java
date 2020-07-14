@@ -1,5 +1,6 @@
 package carrito.encapsulacion;
 
+import carrito.services.ServicioComentario;
 import carrito.services.ServicioProducto;
 import carrito.services.ServicioUsuario;
 import carrito.services.ServicioVenta;
@@ -8,6 +9,7 @@ import javax.print.attribute.standard.PrinterMessageFromOperator;
 import java.awt.desktop.SystemSleepEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,6 +18,7 @@ public class Controladora {
     private final ServicioProducto servicioProducto = new ServicioProducto();
     private final ServicioUsuario servicioUsuario = new ServicioUsuario();
     private final ServicioVenta servicioVenta = new ServicioVenta();
+    private final ServicioComentario servicioComentario = new ServicioComentario();
 
     /**
      *Implementando el patron Singleton
@@ -145,5 +148,28 @@ public class Controladora {
              estado = servicioProducto.editar(aux);
         }
         return estado;
+    }
+
+
+    public boolean agregarComentario(String comentario, Date fecha, String idProducto){
+        Producto auxProducto =  servicioProducto.buscar(idProducto);
+
+        if(auxProducto!=null){
+            return servicioComentario.crear(new Comentario(auxProducto, comentario, fecha));
+        }
+        return false;
+    }
+    public List<Comentario> getComentarios(String idProducto){
+
+        return servicioComentario.getComentarios(servicioProducto.buscar(idProducto));
+
+    }
+    public boolean borrarComentario(String idComentario){
+
+        return servicioComentario.eliminar(idComentario);
+    }
+    public Comentario buscarCOmentario(String idComentario){
+
+        return servicioComentario.buscar(idComentario);
     }
 }

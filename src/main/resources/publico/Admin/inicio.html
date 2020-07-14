@@ -437,6 +437,7 @@
 				<th>Producto</th>
 				<th>Descripcion</th>
 				<th>Precio (RD$) </th>
+				<th>Comentarios</th>
 				<th>Acción</th>
 
 			</tr>
@@ -444,17 +445,25 @@
 			<tbody>
 			<tr  th:each="Producto : ${lista}">
 				<!--Sirve para darle una mejor vista-->
-				<td  th:each="foto, cont : ${Producto.fotoList}">
-					<div th:class="${cont.first} ? 'carousel-item active' : 'carousel-item'">
-						<img th:src="@{'data:' + ${foto.mimeType} + '; base64,' + ${foto.fotoBase64}}" width="100" height="100">
-					</div>
+				<td  >
+
+						<img th:src="@{'data:' + ${Producto.fotoList[0].mimeType} + '; base64,' + ${Producto.fotoList[0].fotoBase64}}" width="100" height="100">
 
 
 				</td>
-				<td th:text="${Producto.id}"></td>
+				<td th:text="${Producto.id}">
+
+				</td>
+
+
 				<td th:text="${Producto.nombre}"></td>
+
 				<td th:text="${Producto.descripcion}"></td>
 				<td th:text="${Producto.precio}"></td>
+				<td >
+					<a id='pru' th:href="'/view?Id='+${Producto.id}" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+
+				</td>
 				<td>
 					<!--Trantando de enviar parrametros a plantilla of editar-->
 					<a id='ok' href="#editEmployeeModal" class="edit" data-toggle="modal">
@@ -468,6 +477,14 @@
 		</table>
 
 	</div>
+</div>
+
+
+</form>
+<div id="viewComentarios" class="modal fade">
+	<form id="view" name="view" method="post" action="/view" enctype="multipart/form-data">
+		<input type="hidden" name="idView" id="idView" value="">
+	</form>
 </div>
 <!-- ADD Modal HTML --> <!--Venta para agregar un producuto-->
 <div id="addProducto" class="modal fade">

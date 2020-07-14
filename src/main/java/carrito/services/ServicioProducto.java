@@ -1,7 +1,10 @@
 package carrito.services;
 
+import carrito.encapsulacion.Comentario;
 import carrito.encapsulacion.Producto;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,4 +20,5 @@ public class ServicioProducto extends ManejadorBD<Producto> {
     public ServicioProducto() {
         super(Producto.class);
     }
+
 }

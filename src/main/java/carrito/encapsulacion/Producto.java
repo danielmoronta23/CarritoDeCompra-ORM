@@ -8,6 +8,7 @@ import java.util.List;
 
 
 @Entity //para indicar que la entidad será maneja por el provedor de persistencia
+
 @Table(name = "Producto")
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;

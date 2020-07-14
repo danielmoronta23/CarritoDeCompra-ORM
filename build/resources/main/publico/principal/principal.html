@@ -162,24 +162,30 @@
 
 										<div class="thumb-content">
 
-											<div class="img-box" th:each="foto, cont : ${Producto.fotoList}">
-												<div th:class="${cont.first} ? 'carousel-item active' : 'carousel-item'">
-													<img th:src="@{'data:' + ${foto.mimeType} + '; base64,' + ${foto.fotoBase64}}" width="280" height="210">
+											<div class="img-box">
+												<div >
+													<img th:src="@{'data:' + ${Producto.fotoList[0].mimeType} + '; base64,' + ${Producto.fotoList[0].fotoBase64}}" width="700" height="280">
 												</div>
 											</div>
 											<h4  th:text="${Producto.nombre}"></h4>
 											<p th:text="${Producto.descripcion}"></p>
-											<p class="item-price">$ <b th:text="${Producto.precio}"></b>
-												<input  name="cant" type="number" form="fcarro" min="1" max="100" step="1" value="1" />
-											</p>
 											<p>
-											<form method="post" action="/detalles" id="fdetalles" class="fdetalles" name="fdetalles">
+											<form method="post" action="/detalles"  class="fdetalles" name="fdetalles">
 												<input type="hidden" id="Iddetalles" name="Iddetalles" th:value="${Producto.id}" >
 											</form>
-											<form method="post" action="/update" id="fcarro" class="fcarro" name="fcarro">
+											<form method="post" action="/update" th:id="${Producto.id}" class="fcarro" name="fcarro">
+												<p class="item-price">$ <b th:text="${Producto.precio}"></b>
+													<input  name="cant" type="number" th:form="${Producto.id}" min="1" max="100" step="1" value="1" />
+												</p>
 												<input type="hidden" id="custId" name="custId" th:value="${Producto.id}" >
-												<button class="btn btn-success"  form="fdetalles">More</button>
-												<button class="btn btn-success" id="ok" form="fcarro">Add to Cart</button>
+
+												<div cclass="col-sm">
+													<a  class="btn btn-success ml-1 rounded" th:href="@{/agregarcomentario(Id=${Producto.id})}">
+														MORE
+													</a>
+													<button class="btn btn-success ml-1 rounded" id="ok"  th:form="${Producto.id}">Add to Cart</button>
+
+												</div>
 											</form>
 											</p>
 										</div>

@@ -59,8 +59,11 @@ public class ZonaAdmin extends ControladorBase {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("usuario","Daniel Peña");
                     List<Producto> auxProducto = Controladora.getInstance().getMiProducto();
+
                     modelo.put("titulo", "Listado de producto");
                     modelo.put("lista", auxProducto);
+                   // Foto foto= aux.getFotoList().get(aux.getFotoList().size()-1);
+                   // modelo.put("foto", foto);
                     ctx.render("/publico/Admin/inicio.html",modelo);
 
                 });
@@ -200,6 +203,30 @@ public class ZonaAdmin extends ControladorBase {
             modelo.put("titulo", "Listado de producto");
             modelo.put("lista", auxProducto);
             ctx.render("/publico/Admin/inicio.html",modelo);
+
+        });
+        app.get("/view", ctx -> {
+
+            System.out.println("El tipo de datos recibido: "+ctx.header("Comtemt")+ "Matricula:"+ctx.queryParam("Id"));
+
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("usuario", "Daniel P. Moronta");
+            modelo.put("titulo", "Producto en el carrito");
+            String idProducto = ctx.formParam("idView");
+            System.out.println("Se quiere ver los detalles de "+idProducto);
+
+            Producto aux = null;
+            aux = Controladora.getControladora().buscarProducto(ctx.queryParam("Id"));
+            List<Comentario> lista = Controladora.getInstance().getComentarios(aux.getId());
+            if(aux!=null){
+                List<Foto> a= aux.getFotoList();
+                modelo.put("lista", a);
+                modelo.put("listaComentario", lista);
+                ctx.render("/publico/Admin/comentarios.html", modelo);
+            }else{
+                ctx.result("Error al buscar la info solicitada");
+            }
+
 
         });
     }
