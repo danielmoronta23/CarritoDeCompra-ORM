@@ -4,7 +4,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-group 'edu.pucmm.ceit.p2'
+mainClassName = 'carrito.Main'
+group 'carrito'
 version '1.0-SNAPSHOT'
 
 repositories {
