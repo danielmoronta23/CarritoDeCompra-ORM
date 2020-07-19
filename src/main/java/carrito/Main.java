@@ -17,7 +17,7 @@ public class Main {
         Javalin app = Javalin.create(config ->{
             config.addStaticFiles("/publico"); //desde la carpeta de resources
             config.enableCorsForAllOrigins();
-        }).start(7000);
+        }).start(getHerokuAssignedPort());
         new ControladorPlantilla(app);
         new ControladorCarrito(app).aplicarRutas();
         new ZonaAdmin(app).aplicarRutas();
@@ -30,7 +30,6 @@ public class Main {
             Controladora.getInstance().crearDatosPorDefecto();
         }
 
-
     }
     public static String getModoConexion() {
         return modoConexion;
@@ -39,6 +38,12 @@ public class Main {
     public static void setModoConexion(String modoConexion) {
         Main.modoConexion = modoConexion;
     }
-
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 7000; //Retorna el puerto por defecto en caso de no estar en Heroku.
+    }
 
 }
