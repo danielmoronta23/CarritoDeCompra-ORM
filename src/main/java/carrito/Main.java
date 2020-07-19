@@ -27,7 +27,7 @@ public class Main {
          */
         if(modoConexion.isEmpty()) {
             ConexionBD.getInstance().InciarBD();
-            Controladora.getInstance();
+            Controladora.getInstance().crearDatosPorDefecto();
         }
 
 

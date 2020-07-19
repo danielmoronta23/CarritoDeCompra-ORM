@@ -25,11 +25,6 @@ public class Controladora {
      */
     public Controladora() {
         BigDecimal aux = new BigDecimal(10);
-
-        //Usuario por defecto
-        if(servicioProducto.buscar("admin")==null){
-            servicioUsuario.crear(new Usuario("admin", "admin"));
-        }
     }
 
     public static Controladora getInstance() {
@@ -68,45 +63,6 @@ public class Controladora {
     public void crearProducto(String name, BigDecimal precio, String descripcion, List<Foto> fotoList){
         servicioProducto.crear(new Producto(name,precio, descripcion, fotoList));
     }
-    /**
-    public boolean borrarProducto(String ID){
-        return ServicioProducto.borrarProducto(ID);
-    }
-    public boolean actulizarProducto(String ID, String nombre, BigDecimal precio){
-        return ServicioProducto.actualizarProducto( new Producto(ID,nombre,precio));
-    }
-
-    //Funciones adicionales: lista producto y buscada de producto
-    public List<Producto> getMiProducto() {
-        return ServicioProducto.listaProducto();
-    }
-    public Producto buscarProducto(String ID){
-        return ServicioProducto.buscaProudcto(ID);
-    }
-
-    //Funciones para venta
-    public void agregarVenta(VentasProductos venta){
-        GeneradorID a = new GeneradorID();
-        venta.setId( a.generarID("V", venta));
-        ServicioVenta.realizarVenta(venta);
-    }
-    public List<VentasProductos> getMisVentasProducto() {
-
-        List<VentasProductos> aux = new ArrayList<>();
-        aux = ServicioVenta.listaVenta();
-        for (VentasProductos a: aux) {
-
-            a.setListaProducto(ServicioVenta.listaProductoVenta(a.getId()));
-
-
-        }
-        return aux;
-    }
-
-
-    /**
-     * Proyecto antiguo, se esta actualizando para que sea compatible con BD
-     */
 
     private List<CarroCompra> miCarroComprea = new ArrayList<>();
     public List<CarroCompra> getMiCarroComprea() {
@@ -183,6 +139,12 @@ public class Controladora {
     }
     public int cantProducto(){
         return servicioProducto.cantProducto();
+    }
+    public void crearDatosPorDefecto(){
+        //Usuario por defecto
+        if(servicioProducto.buscar("admin")==null){
+            servicioUsuario.crear(new Usuario("admin", "admin"));
+        }
     }
 
 }
