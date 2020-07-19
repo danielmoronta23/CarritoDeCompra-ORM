@@ -11,7 +11,8 @@ import carrito.services.CrearTablas;
 import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) {
+    private static String modoConexion = "";
+    public static void main(String[] args) throws SQLException {
         //Creando la instancia del servidor.
         Javalin app = Javalin.create(config ->{
             config.addStaticFiles("/publico"); //desde la carpeta de resources
@@ -24,15 +25,19 @@ public class Main {
         /**
          * Iniciando en modo servidor la BD
          */
-        try {
-           // ConexionBD.getInstance().InciarBD();
+        if(modoConexion.isEmpty()) {
             ConexionBD.getInstance().InciarBD();
             Controladora.getInstance();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
 
 
+    }
+    public static String getModoConexion() {
+        return modoConexion;
+    }
+
+    public static void setModoConexion(String modoConexion) {
+        Main.modoConexion = modoConexion;
     }
 
 

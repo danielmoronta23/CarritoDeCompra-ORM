@@ -1,5 +1,6 @@
 package carrito.services;
 
+import carrito.Main;
 import carrito.encapsulacion.Usuario;
 
 import javax.persistence.EntityExistsException;
@@ -10,7 +11,10 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaQuery;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class ManejadorBD<T> {
     private static EntityManagerFactory entityManagerFactory;
@@ -18,7 +22,11 @@ public class ManejadorBD<T> {
 
     public ManejadorBD(Class<T> clase) {
         if (entityManagerFactory == null) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("Carrito");
+            if(Main.getModoConexion().equalsIgnoreCase("Heroku")){
+                entityManagerFactory = getConfiguracionBaseDatosHeroku();
+            }else{
+                entityManagerFactory = Persistence.createEntityManagerFactory("Carrito");
+            }
         }
         this.claseEntidad = clase;
     }
@@ -135,6 +143,32 @@ public class ManejadorBD<T> {
         return entida;
     }
 
+    /**
+     * Configurar información de la conexión de Heroku.
+     * Tomado de https://gist.github.com/mlecoutre/4088178
+     * @return
+     */
+    private EntityManagerFactory getConfiguracionBaseDatosHeroku(){
+        //Leyendo la información de la variable de ambiente de Heroku
+        String databaseUrl = System.getenv("DATABASE_URL");
+        StringTokenizer st = new StringTokenizer(databaseUrl, ":@/");
+        //Separando las información del conexión.
+        String dbVendor = st.nextToken();
+        String userName = st.nextToken();
+        String password = st.nextToken();
+        String host = st.nextToken();
+        String port = st.nextToken();
+        String databaseName = st.nextToken();
+        //creando la jbdc String
+        String jdbcUrl = String.format("jdbc:postgresql://%s:%s/%s", host, port, databaseName);
+        //pasando las propiedades.
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", jdbcUrl );
+        properties.put("javax.persistence.jdbc.user", userName );
+        properties.put("javax.persistence.jdbc.password", password );
+        //
+        return Persistence.createEntityManagerFactory("Heroku", properties);
+    }
 
 
 }
